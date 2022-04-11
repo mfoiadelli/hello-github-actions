@@ -1,14 +1,17 @@
-name: A workflow for my Hello World file
-on: push
+name: Workflow that creates Liquibase changelog
+on: 
+  workflow_dispatch:
+    inputs:
+      RITM:
+        description: 'RITM name'     
+        required: true
 
 jobs:
   build:
-    name: Hello world action
+    name: Create Liquibase changelog
     runs-on: self-hosted
     steps:
       - uses: actions/checkout@v1
-      - name: Print GITHUB_WORKSPACE variable
-        run: echo "${{github.workspace}}"
       - uses: ./self-hosted-runner-action-a
         with:
-          RITM: ${{github.workspace}}"/OracleScripts/202204/RITM0069070"
+          RITM: ${{github.workspace}}"/OracleScripts/"${{github.event.inputs.RITM}}
