@@ -1,11 +1,11 @@
 name: 'Hello World on self-hosted runner'
 description: 'Greet someone'
 inputs:
-  who-to-greet:  # id of input
+  RITM:  # id of input
     description: 'Who to greet'
     required: true
     default: 'World'
 using: "composite"
   steps:
-    - run: ${{ github.action_path }}/script.sh
+    - run: /Users/matteofoiadelli/Documents/Development/LiquibaseChangeLogGenerator/generateChangeLog.sh ${{ RITM }}
       shell: bash
