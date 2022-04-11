@@ -30,7 +30,7 @@ jobs:
       
       - name: Generate or find Liquibase changelog file
         id: generate-or-find-changelog-file
-        uses: ./self-hosted-runner-action-a
+        uses: ./oracle_scripts_action
         with:
           RITM: ${{github.event.inputs.RITM}}
           environment: ${{github.event.inputs.environment}}
