@@ -8,7 +8,8 @@ inputs:
     description: 'The environment to deploy to'
  outputs:
   changelogFilePath:
-    description: 'The path to the generated changelog file'
+  value: ${{ steps.liquibase-changelog-generator.outputs.changelogFilePath }}
+  description: 'The path to the generated changelog file'
 runs:
   using: "composite" 
   steps:
