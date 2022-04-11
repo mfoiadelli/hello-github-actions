@@ -7,9 +7,8 @@ jobs:
     runs-on: self-hosted
     steps:
       - uses: actions/checkout@v1
+      - name: Print GITHUB_WORKSPACE variable
+        run: echo "${GITHUB_WORKSPACE}"
       - uses: ./action-a
         with:
           MY_NAME: "Mona"
-      - name: Print GITHUB_WORKSPACE variable
-        run: |
-            echo "${GITHUB_WORKSPACE}"
