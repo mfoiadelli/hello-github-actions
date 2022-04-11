@@ -40,5 +40,6 @@ jobs:
           environment: ${{github.event.inputs.environment}}
       - name: Get changelog file
         run: |
-          [[ -z ${{ steps.set-changelog-file-path.outputs.changelogFilePath }} ]] && file=${{ steps.generate-changelog-file.outputs.changelogFilePath }} || file=${{ steps.set-changelog-file-path.outputs.changelogFilePath }}
+          providedChangeLog=${{steps.set-changelog-file-path.outputs.changelogFilePath}}
+          [[ -z $providedChangeLog ]] && file=${{steps.generate-changelog-file.outputs.changelogFilePath}} || file=${{steps.set-changelog-file-path.outputs.changelogFilePath}}
           echo "USING ${file} changelog for liquibase deploy"
