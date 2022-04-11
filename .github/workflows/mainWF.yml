@@ -23,35 +23,19 @@ jobs:
     name: Create Liquibase changelog
     runs-on: self-hosted
     outputs:
-      changeLogFilePath: ${{ steps.get-changelog-file.outputs.changeLogFilePath }}
+      changeLogFilePath: ${{ steps.generate-or-find-changelog-file.outputs.changeLogFilePath }}
       
     steps:
       - uses: actions/checkout@v1
       
-      - if: "${{ github.event.inputs.changelog-file != '' }}"
-        name: Find provided changelog file
-        id: set-changelog-file-path
-        run: |
-          echo "${{github.event.inputs.changelog-file}}"
-          ritmDir=$(find -E ${{ github.workspace }} -regex "${{ github.workspace }}/OracleScripts/[0-9]{6}/${{ github.event.inputs.RITM }}")
-          echo "::set-output name=changelogFilePath::${ritmDir}/${{github.event.inputs.changelog-file}}"   
-          
-      - if: "${{ github.event.inputs.changelog-file == '' }}"
-        name: Generate Liquibase changelog file
-        id: generate-changelog-file
+      - name: Generate or find Liquibase changelog file
+        id: generate-or-find-changelog-file
         uses: ./self-hosted-runner-action-a
         with:
           RITM: ${{github.event.inputs.RITM}}
           environment: ${{github.event.inputs.environment}}
           changelog-file: ${{github.event.inputs.changelog-file
           
-      - name: Get changelog file
-        id: get-changelog-file
-        run: |
-          providedChangeLog=${{steps.set-changelog-file-path.outputs.changelogFilePath}}
-          [[ -z $providedChangeLog ]] && file=${{steps.generate-changelog-file.outputs.changelogFilePath}} || file=${{steps.set-changelog-file-path.outputs.changelogFilePath}}
-          echo "##[set-output name=changeLogFilePath;]"${file}
-  
   process-changelog:
     name: Process Liquibase changelog
     runs-on: self-hosted
