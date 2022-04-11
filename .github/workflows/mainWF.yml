@@ -29,7 +29,7 @@ jobs:
       - uses: actions/checkout@v1
       
       - if: "${{ github.event.inputs.changelogFile != '' }}"
-        name: Find or create changelog file
+        name: Find provided changelog file
         id: set-changelog-file-path
         run: |
           echo "${{github.event.inputs.changelogFile}}"
