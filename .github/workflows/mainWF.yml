@@ -8,7 +8,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Print GITHUB_WORKSPACE variable
-        run: echo "${github.workspace}"
+        run: echo "${{github.workspace}}"
       - uses: ./self-hosted-runner-action-a
         with:
           RITM: ${{github.workspace}}"/OracleScripts/202204/RITM0069070"
