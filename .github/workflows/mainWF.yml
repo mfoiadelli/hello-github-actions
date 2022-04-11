@@ -2,9 +2,19 @@ name: Workflow that creates Liquibase changelog
 on: 
   workflow_dispatch:
     inputs:
+      environment:
+        type: choice
+        description: Environment to deploy to
+        options: 
+        - TEST
+        - PROD
+        required: true
       RITM:
         description: 'RITM name'     
         required: true
+      changelogFile:
+        description: 'Liquibase changelog file to be executed'
+        required: false
 
 jobs:
   build:
@@ -12,6 +22,10 @@ jobs:
     runs-on: self-hosted
     steps:
       - uses: actions/checkout@v1
-      - uses: ./self-hosted-runner-action-a
+      - name: condition 1
+        if: "${{ github.event.inputs.changelogFile == '' }}"
+        uses: ./self-hosted-runner-action-a
         with:
           RITM: ${{github.event.inputs.RITM}}
+      - if:  "${{ github.event.inputs.changelogFile != '' }}"
+        run: echo "${{github.event.inputs.changelogFile}}"
