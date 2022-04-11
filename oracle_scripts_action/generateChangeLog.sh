@@ -71,5 +71,7 @@ do
 done
 # CLOSE THE CHANGELOG FILE MAIN TAG
 echo "</databaseChangeLog>" >> ${changelogFile}
+
+# OUTPUT THE RESULT TO GITHUB ACTION AS changelogFilePath VARIABLE
 echo "::set-output name=changelogFilePath::${scriptsDir}/${changelogFile}"
 exit 0
