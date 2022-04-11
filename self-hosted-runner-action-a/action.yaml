@@ -1,11 +1,14 @@
-name: 'Hello World on self-hosted runner'
-description: 'Greet someone'
+name: 'Generate Liquibase Changelog'
+description: 'Generates a liquibase changelog file for sql scripts in RITM'
 inputs:
   RITM:  # id of input
     description: 'Who to greet'
     required: true
     default: 'World'
-using: "composite"
+runs:
+  using: "composite"
   steps:
-    - run: /Users/matteofoiadelli/Documents/Development/LiquibaseChangeLogGenerator/generateChangeLog.sh ${{ RITM }}
+    - id: liquibase-changelog-generator
+      run: /Users/matteofoiadelli/Documents/Development/LiquibaseChangeLogGenerator/generateChangeLog.sh ${{ RITM }}
       shell: bash
+      
