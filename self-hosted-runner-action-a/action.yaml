@@ -6,6 +6,9 @@ inputs:
     required: true
   environment:
     description: "The environment to deploy to"
+    required: true
+  changelog-file: 
+    description: "The user provided changelog file name (if any)"
 outputs:
   changelogFilePath:
     description: "The path to the generated changelog file"
@@ -15,6 +18,6 @@ runs:
   using: "composite" 
   steps:
     - id: liquibase-changelog-generator
-      run: /Users/matteofoiadelli/Documents/Development/LiquibaseChangeLogGenerator/generateChangeLog.sh ${{ inputs.RITM }} ${{ inputs.environment }}
+      run: /Users/matteofoiadelli/Documents/Development/LiquibaseChangeLogGenerator/generateChangeLog.sh ${{ inputs.RITM }} ${{ inputs.environment }} ${{ inputs.changelog-file }}
       shell: bash
       
