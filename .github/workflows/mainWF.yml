@@ -19,18 +19,23 @@ on:
         type: string
 
 jobs:
-  build:
+  create-changelog:
     name: Create Liquibase changelog
     runs-on: self-hosted
+    outputs:
+      changeLogFilePath: ${{ steps.get-changelog-file.outputs.changeLogFilePath }}
+      
     steps:
       - uses: actions/checkout@v1
+      
       - if: "${{ github.event.inputs.changelogFile != '' }}"
         name: Find or create changelog file
         id: set-changelog-file-path
         run: |
           echo "${{github.event.inputs.changelogFile}}"
           ritmDir=$(find -E ${{ github.workspace }} -regex "${{ github.workspace }}/OracleScripts/[0-9]{6}/${{ github.event.inputs.RITM }}")
-          echo "::set-output name=changelogFilePath::${ritmDir}/${{github.event.inputs.changelogFile}}"      
+          echo "::set-output name=changelogFilePath::${ritmDir}/${{github.event.inputs.changelogFile}}"   
+          
       - if: "${{ github.event.inputs.changelogFile == '' }}"
         name: Generate Liquibase changelog file
         id: generate-changelog-file
@@ -38,8 +43,20 @@ jobs:
         with:
           RITM: ${{github.event.inputs.RITM}}
           environment: ${{github.event.inputs.environment}}
+          
       - name: Get changelog file
+        id: get-changelog-file
         run: |
           providedChangeLog=${{steps.set-changelog-file-path.outputs.changelogFilePath}}
           [[ -z $providedChangeLog ]] && file=${{steps.generate-changelog-file.outputs.changelogFilePath}} || file=${{steps.set-changelog-file-path.outputs.changelogFilePath}}
-          echo "USING ${file} changelog for liquibase deploy"
+          echo "##[set-output name=changeLogFilePath;]"${file}
+  
+  process-changelog:
+    name: Process Liquibase changelog
+    runs-on: self-hosted
+    needs: [ create-changelog ]
+    
+    steps:
+      - name: Process changelog
+        run: echo "${{needs.create-changelog.outputs.changeLogFilePath}} CHANGELOG FILE"
+    
