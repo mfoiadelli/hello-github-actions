@@ -12,15 +12,11 @@ on:
       RITM:
         description: 'RITM name'     
         required: true
+        type: string
       changelogFile:
         description: 'Liquibase changelog file to be executed'
         required: false
-      boh:
-        type: environment
-        options: 
-        - TEST
-        - PROD
-        required: true
+        type: string
 
 jobs:
   build:
