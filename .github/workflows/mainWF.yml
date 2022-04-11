@@ -24,10 +24,20 @@ jobs:
     runs-on: self-hosted
     steps:
       - uses: actions/checkout@v1
-      - name: condition 1
-        if: "${{ github.event.inputs.changelogFile == '' }}"
+      - if: "${{ github.event.inputs.changelogFile != '' }}"
+        name: Find or create changelog file
+        id: set-changelog-file-path
+        run: |
+          echo "${{github.event.inputs.changelogFile}}"
+          ritmDir=$(find -E ${{ github.workspace }} -regex "${{ github.workspace }}/OracleScripts/[0-9]{6}/${{ github.event.inputs.RITM }}")
+          echo "::set-output name=changelogFilePath::${ritmDir}/${{github.event.inputs.changelogFile}}"      
+      - if: "${{ github.event.inputs.changelogFile == '' }}"
+        name: Generate Liquibase changelog file
+        id: generate-changelog-file
         uses: ./self-hosted-runner-action-a
         with:
           RITM: ${{github.event.inputs.RITM}}
-      - if:  "${{ github.event.inputs.changelogFile != '' }}"
-        run: echo "${{github.event.inputs.changelogFile}}"
+      - name: Get changelog file
+        run: |
+          [[ -z ${{ steps.set-changelog-file-path.outputs.changelogFilePath }} ]] && file=${{ steps.generate-changelog-file.outputs.changelogFilePath }} || file=${{ steps.set-changelog-file-path.outputs.changelogFilePath }}
+          echo "USING ${file} changelog for liquibase deploy"
