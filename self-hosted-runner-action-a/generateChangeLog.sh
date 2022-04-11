@@ -26,7 +26,7 @@ providedFileName=$3
 scriptsDir=$(find -E ${GITHUB_WORKSPACE} -regex "${GITHUB_WORKSPACE}/OracleScripts/[0-9]{6}/${ritm}")
 [[ ! $scriptsDir ]] && echo "::error::ERROR: directory ${scriptsDir} doesn't exist!" && exit 1
 
-# IF A CHANGELOG FILE HAS BEEN PROVIDED => BUILD THE PATH
+# IF A VALID CHANGELOG FILE HAS BEEN PROVIDED THEN BUILD THE PATH, EXIT WITH ERROR OTHERWISE
 [[ -n ${providedFileName} ]] && [[ -f ${scriptsDir}/${providedFileName} ]] && echo "::set-output name=changelogFilePath::${scriptsDir}/${providedFileName}" && exit 0 || [[ -n ${providedFileName} ]] && echo "::error::The changelog file [ ${scriptsDir}/${providedFileName} ] does not exist! Aborting..." && exit 1
 
 # MOVE TO THE DIRECTORY CONTAINING THE SQL SCRIPTS FOR THE RITM
