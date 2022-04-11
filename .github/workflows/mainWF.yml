@@ -11,4 +11,4 @@ jobs:
         run: echo "${GITHUB_WORKSPACE}"
       - uses: ./self-hosted-runner-action-a
         with:
-          who-to-greet: "Matteo"
+          RITM: "/Users/matteofoiadelli/Documents/Development/Amplifon/GitHub/OracleScripts/202204/RITM0069070"
