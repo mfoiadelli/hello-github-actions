@@ -2,13 +2,14 @@ name: 'Generate Liquibase Changelog'
 description: 'Generates a liquibase changelog file for sql scripts in RITM'
 inputs:
   RITM:  # id of input
-    description: 'Who to greet'
+    description: 'The name of the RITM to be deployed'
     required: true
-    default: 'World'
+  environment:
+    description: 'The environment to deploy to"
 runs:
   using: "composite" 
   steps:
     - id: liquibase-changelog-generator
-      run: /Users/matteofoiadelli/Documents/Development/LiquibaseChangeLogGenerator/generateChangeLog.sh ${{ inputs.RITM }}
+      run: /Users/matteofoiadelli/Documents/Development/LiquibaseChangeLogGenerator/generateChangeLog.sh ${{ inputs.RITM }} ${{ inputs.environment }}
       shell: bash
       
