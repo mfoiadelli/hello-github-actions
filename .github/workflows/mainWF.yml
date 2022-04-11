@@ -34,7 +34,7 @@ jobs:
         with:
           RITM: ${{github.event.inputs.RITM}}
           environment: ${{github.event.inputs.environment}}
-          changelog-file: ${{github.event.inputs.changelog-file
+          changelog-file: ${{github.event.inputs.changelog-file}}
           
   process-changelog:
     name: Process Liquibase changelog
