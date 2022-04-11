@@ -19,6 +19,7 @@ runs:
   steps:
     - name: Make executeable
       run: chmod +x ./generateChangeLog.sh
+      shell: bash
     - id: liquibase-changelog-generator
       run: ${{ github.action_path }}/generateChangeLog.sh ${{ inputs.RITM }} ${{ inputs.environment }} ${{ inputs.changelog-file }}
       shell: bash
