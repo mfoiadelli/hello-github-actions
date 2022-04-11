@@ -6,6 +6,9 @@ inputs:
     required: true
   environment:
     description: 'The environment to deploy to'
+ outputs:
+  changelogFilePath:
+    description: 'The path to the generated changelog file'
 runs:
   using: "composite" 
   steps:
