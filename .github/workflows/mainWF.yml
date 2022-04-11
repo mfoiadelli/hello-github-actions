@@ -37,6 +37,7 @@ jobs:
         uses: ./self-hosted-runner-action-a
         with:
           RITM: ${{github.event.inputs.RITM}}
+          environment: ${{github.event.inputs.environment}}
       - name: Get changelog file
         run: |
           [[ -z ${{ steps.set-changelog-file-path.outputs.changelogFilePath }} ]] && file=${{ steps.generate-changelog-file.outputs.changelogFilePath }} || file=${{ steps.set-changelog-file-path.outputs.changelogFilePath }}
