@@ -6,7 +6,7 @@ inputs:
     required: true
     default: 'World'
 runs:
-  using: "composite"
+  using: "composite" 
   steps:
     - id: liquibase-changelog-generator
       run: /Users/matteofoiadelli/Documents/Development/LiquibaseChangeLogGenerator/generateChangeLog.sh ${{ inputs.RITM }}
