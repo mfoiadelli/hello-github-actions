@@ -41,12 +41,12 @@ jobs:
           
   process-changelog:
     name: Process Liquibase changelog
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     needs: [ create-changelog ]
     
     steps:
       - name: Process changelog
-        uses: liquibase/liquibase-github-action@v2
+        uses: liquibase/liquibase-github-action@v4
         with:
           operation: 'update'
           classpath: '/usr/local/opt/liquibase:/usr/local/opt/liquibase/lib/*'
