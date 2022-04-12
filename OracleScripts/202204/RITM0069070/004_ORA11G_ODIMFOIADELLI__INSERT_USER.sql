@@ -1,4 +1,4 @@
-INSERT INTO ODI_MFOIADELLI.utente_test_liquibase (
+INSERT INTO utente_test_liquibase (
     nome,
     cognome,
     email
