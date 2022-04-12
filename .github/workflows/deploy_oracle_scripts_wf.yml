@@ -26,7 +26,8 @@ jobs:
     name: Create Liquibase changelog
     runs-on: self-hosted
     outputs:
-      changeLogFilePath: ${{ steps.generate-or-find-changelog-file.outputs.changeLogFilePath }}
+      changelogFile: ${{ steps.generate-or-find-changelog-file.outputs.changelogFile }}
+      changelogDir: ${{ steps.generate-or-find-changelog-file.outputs.changelogDir }}
       
     steps:
       - uses: actions/checkout@v1
@@ -46,4 +47,4 @@ jobs:
     environment: ${{github.event.inputs.environment}}
     steps:
       - name: Process changelog
-        run: liquibase --classpath='/usr/local/opt/liquibase:/usr/local/opt/liquibase/lib:/' --driver=oracle.jdbc.OracleDriver --changelog-file=${{needs.create-changelog.outputs.changeLogFilePath}} --url=${{secrets.ORACLE_DB_URL}} --username=${{secrets.ORACLE_DB_USER}} --password=${{secrets.ORACLE_DB_PASSWORD}} update
+        run: liquibase --classpath="/usr/local/opt/liquibase:/usr/local/opt/liquibase/lib:${needs.create-changelog.outputs.changelogDir}" --driver=oracle.jdbc.OracleDriver --changelog-file=${{needs.create-changelog.outputs.changelogFile}} --url=${{secrets.ORACLE_DB_URL}} --username=${{secrets.ORACLE_DB_USER}} --password=${{secrets.ORACLE_DB_PASSWORD}} update
