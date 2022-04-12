@@ -41,12 +41,10 @@ jobs:
           
   process-changelog:
     name: Process Liquibase changelog
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: [ create-changelog ]
     environment: ${{github.event.inputs.environment}}
     steps:
-      - name: LIST SECRETS
-        run: echo "${{secrets.ORACLE_DB_URL}}"
       - name: Process changelog
         uses: liquibase/liquibase-github-action@v4
         with:
