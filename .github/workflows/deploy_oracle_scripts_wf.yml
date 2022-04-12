@@ -17,10 +17,6 @@ on:
         description: 'Liquibase changelog file to be executed'
         required: false
         type: string
-      w-file: 
-        required: false
-        type: environment
-
 
 jobs:
   create-changelog:
