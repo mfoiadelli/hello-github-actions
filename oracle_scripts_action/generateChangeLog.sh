@@ -27,7 +27,7 @@ scriptsDir=$(find -E ${GITHUB_WORKSPACE} -regex "${GITHUB_WORKSPACE}/OracleScrip
 [[ ! $scriptsDir ]] && echo "::error::ERROR: directory ${scriptsDir} doesn't exist!" && exit 1
 
 # IF A VALID CHANGELOG FILE HAS BEEN PROVIDED THEN BUILD THE PATH, EXIT WITH ERROR OTHERWISE
-[[ -n ${providedFileName} ]] && [[ -f ${scriptsDir}/${providedFileName} ]] && echo "::set-output name=changelogFilePath::${scriptsDir}/${providedFileName}" && exit 0 || [[ -n ${providedFileName} ]] && echo "::error::The changelog file [ ${scriptsDir}/${providedFileName} ] does not exist! Aborting..." && exit 1
+[[ -n ${providedFileName} ]] && [[ -f ${scriptsDir}/${providedFileName} ]] && echo "::set-output name=changelogFile::${providedFileName}" && echo "::set-output name=changelogDir::${scriptsDir}" && exit 0 || [[ -n ${providedFileName} ]] && echo "::error::The changelog file [ ${scriptsDir}/${providedFileName} ] does not exist! Aborting..." && exit 1
 
 # MOVE TO THE DIRECTORY CONTAINING THE SQL SCRIPTS FOR THE RITM
 cd "$scriptsDir" || exit 1
@@ -42,7 +42,7 @@ CHANGELOG_HEADER='<?xml version="1.0" encoding="UTF-8"?>
 '
 
 # CREATE AND INITIALIZE THE CHANGELOG FILE WRITING ITS XML HEADER
-changelogFile=${environment}_changelog.xml
+changelogFile=${environment}_${ritm}_changelog.xml
 echo "${CHANGELOG_HEADER}" > ${changelogFile}
 
 # ENSURE TO SKIP THE FOR LOOP BODY IF NO MATCH IS FOUND (NO SQL FILES FOUND IN THE DIRECTORY)
@@ -73,5 +73,6 @@ done
 echo "</databaseChangeLog>" >> ${changelogFile}
 
 # OUTPUT THE RESULT TO GITHUB ACTION AS changelogFilePath VARIABLE
-echo "::set-output name=changelogFilePath::${scriptsDir}/${changelogFile}"
+echo "::set-output name=changelogFile::${changelogFile}"
+echo "::set-output name=changelogDir::${scriptsDir}"
 exit 0
