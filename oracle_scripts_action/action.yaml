@@ -10,9 +10,12 @@ inputs:
   changelog-file: 
     description: "The user provided changelog file name (if any)"
 outputs:
-  changelogFilePath:
-    description: "The path to the generated changelog file"
-    value: ${{steps.liquibase-changelog-generator.outputs.changelogFilePath}}
+  changelogFile:
+    description: "The name of the changelog file to process"
+    value: ${{steps.liquibase-changelog-generator.outputs.changelogFile}}
+  changelogDir:
+    description: "The path to the changelog file to process"
+    value: ${{steps.liquibase-changelog-generator.outputs.changelogFile}}
     
 runs:
   using: "composite" 
