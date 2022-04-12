@@ -46,4 +46,4 @@ jobs:
     environment: ${{github.event.inputs.environment}}
     steps:
       - name: Process changelog
-        run: liquibase --classpath='/usr/local/opt/liquibase:/usr/local/opt/liquibase/lib/*' --driver=oracle.jdbc.OracleDriver --change-log-file=${{needs.create-changelog.outputs.changeLogFilePath}} --url=${{secrets.ORACLE_DB_URL}} --username=${{secrets.ORACLE_DB_USER}} --password=${{secrets.ORACLE_DB_PASSWORD}} update
+        run: liquibase --classpath='/usr/local/opt/liquibase:/usr/local/opt/liquibase/lib/*' --driver=oracle.jdbc.OracleDriver --changelog-file=${{needs.create-changelog.outputs.changeLogFilePath}} --url=${{secrets.ORACLE_DB_URL}} --username=${{secrets.ORACLE_DB_USER}} --password=${{secrets.ORACLE_DB_PASSWORD}} update
