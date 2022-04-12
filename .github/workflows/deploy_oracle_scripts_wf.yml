@@ -41,16 +41,18 @@ jobs:
           
   process-changelog:
     name: Process Liquibase changelog
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: [ create-changelog ]
     
     steps:
+      - name: LIST SECRETS
+        run: echo "${{secrets}}"
       - name: Process changelog
         uses: liquibase/liquibase-github-action@v4
         with:
           operation: 'update'
           classpath: '/usr/local/opt/liquibase:/usr/local/opt/liquibase/lib/*'
           changeLogFile: ${{needs.create-changelog.outputs.changeLogFilePath}}
-          username: ${{secrets.ORACLE_DB_USER}}
-          password: ${{secrets.ORACLE_DB_PASSWORD}}
-          url: ${{secrets.ORACLE_DB_URL}}
+          username: ${{ secrets.ORACLE_DB_USER }}
+          password: ${{ secrets.ORACLE_DB_PASSWORD }}
+          url: ${{ secrets.ORACLE_DB_URL}}
