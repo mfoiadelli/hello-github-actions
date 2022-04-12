@@ -43,7 +43,7 @@ jobs:
     name: Process Liquibase changelog
     runs-on: self-hosted
     needs: [ create-changelog ]
-    
+    environment: ${{github.event.inputs.environment}}
     steps:
       - name: LIST SECRETS
         run: echo "${{env.ORACLE_DB_URL}}"
