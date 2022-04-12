@@ -43,5 +43,11 @@ jobs:
     
     steps:
       - name: Process changelog
-        run: echo "PROCESSING ${{needs.create-changelog.outputs.changeLogFilePath}} CHANGELOG FILE"
-    
+        uses: liquibase/liquibase-github-action@v2
+        with:
+          operation: 'update'
+          classpath: '/usr/local/opt/liquibase:/usr/local/opt/liquibase/lib/*'
+          changeLogFile: ${{needs.create-changelog.outputs.changeLogFilePath}}
+          username: 'ODI_MFOIADELLI'
+          password: 'ODI_MFOIADELLI'
+          url: 'jdbc:oracle:thin:@icteam-ora05:1521:ORA11G'
