@@ -46,7 +46,7 @@ jobs:
     environment: ${{github.event.inputs.environment}}
     steps:
       - name: LIST SECRETS
-        run: echo "${{env.ORACLE_DB_URL}}"
+        run: echo "${{secrets.ORACLE_DB_URL}}"
       - name: Process changelog
         uses: liquibase/liquibase-github-action@v4
         with:
