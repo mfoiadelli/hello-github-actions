@@ -15,7 +15,7 @@ outputs:
     value: ${{steps.liquibase-changelog-generator.outputs.changelogFile}}
   changelogDir:
     description: "The path to the changelog file to process"
-    value: ${{steps.liquibase-changelog-generator.outputs.changelogFile}}
+    value: ${{steps.liquibase-changelog-generator.outputs.changelogDir}}
     
 runs:
   using: "composite" 
