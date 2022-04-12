@@ -3,12 +3,15 @@ on:
   workflow_dispatch:
     inputs:
       environment:
-        type: choice
-        description: Environment to deploy to
-        options: 
-        - TEST
-        - PROD
+        type: environment
         required: true
+      #environment:
+      #  type: choice
+      #  description: Environment to deploy to
+      #  options: 
+      #  - TEST
+      #  - PROD
+      #  required: true
       RITM:
         description: 'RITM name'     
         required: true
@@ -48,6 +51,6 @@ jobs:
           operation: 'update'
           classpath: '/usr/local/opt/liquibase:/usr/local/opt/liquibase/lib/*'
           changeLogFile: ${{needs.create-changelog.outputs.changeLogFilePath}}
-          username: 'ODI_MFOIADELLI'
-          password: 'ODI_MFOIADELLI'
-          url: 'jdbc:oracle:thin:@icteam-ora05:1521:ORA11G'
+          username: ${{secrets.ORACLE_DB_USER}}
+          password: ${{secrets.ORACLE_DB_PASSWORD}}
+          url: ${{secrets.ORACLE_DB_URL}}
