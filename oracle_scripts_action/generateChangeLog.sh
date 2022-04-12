@@ -60,8 +60,8 @@ do
                 <sqlFile dbms=\"oracle\"
                     encoding=\"UTF-8\"
                     endDelimiter=\";\"
-                    path=\"${scriptFilePath}\"
-                    relativeToChangelogFile=\"false\"
+                    path=\"./${scriptFileName}\"
+                    relativeToChangelogFile=\"true\"
                     splitStatements=\"true\"
                     stripComments=\"true\"/>
             </changeSet>
