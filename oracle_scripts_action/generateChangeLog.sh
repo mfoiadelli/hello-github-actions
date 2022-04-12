@@ -5,8 +5,8 @@ usage() {
      echo
      echo "generateChangeLog.sh"
      echo "Utility for generating Liquibase changelog xml file for the script in the directory named as the RITM provided."
-     echo "The utility will return to the github action the path to the generated file."
-     echo "If an existing changelog file is provided as third parameter, this command will return the absolute path to the file to the github action."
+     echo "The utility will return to the github action the directory containing the changelog file and its name."
+     echo "If an existing changelog file is provided as third parameter, this command will return the path of the directory containing and the file's name to the github action."
      echo
      echo "Syntax: generateChangeLog.sh <RITM_NAME> <ENVIRONMENT> [EXISTING_CHANGELOG_FILE]"
      echo
@@ -26,7 +26,7 @@ providedFileName=$3
 scriptsDir=$(find -E ${GITHUB_WORKSPACE} -regex "${GITHUB_WORKSPACE}/OracleScripts/[0-9]{6}/${ritm}")
 [[ ! $scriptsDir ]] && echo "::error::ERROR: directory ${scriptsDir} doesn't exist!" && exit 1
 
-# IF A VALID CHANGELOG FILE HAS BEEN PROVIDED THEN BUILD THE PATH, EXIT WITH ERROR OTHERWISE
+# IF A VALID CHANGELOG FILE HAS BEEN PROVIDED THEN BUILD THE PATH, RETURN IT WITH THE FILE NAME AND EXIT. EXIT WITH ERROR OTHERWISE
 [[ -n ${providedFileName} ]] && [[ -f ${scriptsDir}/${providedFileName} ]] && echo "::set-output name=changelogFile::${providedFileName}" && echo "::set-output name=changelogDir::${scriptsDir}" && exit 0 || [[ -n ${providedFileName} ]] && echo "::error::The changelog file [ ${scriptsDir}/${providedFileName} ] does not exist! Aborting..." && exit 1
 
 # MOVE TO THE DIRECTORY CONTAINING THE SQL SCRIPTS FOR THE RITM
