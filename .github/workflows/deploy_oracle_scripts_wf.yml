@@ -55,5 +55,5 @@ jobs:
       # TODO: REPLACE WITH LIQUIBASE ACTION
       - name: Process changelog
         run: |
-          user=${{ secrets[format('secrets.ORACLE_DB_{0}', github.event.inputs.user)] }}
+          user=${{ secrets[format('ORACLE_DB_{0}', github.event.inputs.user)] }}
           liquibase --classpath="/usr/local/opt/liquibase:/usr/local/opt/liquibase/lib:${{needs.create-changelog.outputs.changelogDir}}" --driver=oracle.jdbc.OracleDriver --changelog-file=${{needs.create-changelog.outputs.changelogFile}} --url=${{secrets.ORACLE_DB_URL}} --username=${user} --password=${{secrets.ORACLE_DB_PASSWORD}} update
