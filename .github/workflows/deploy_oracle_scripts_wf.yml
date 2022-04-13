@@ -23,8 +23,11 @@ on:
         type: string
       user:
         description: 'Database connection user'
-        type: string
-        default: 'USER'
+        type: choice
+        default: 'ODI_MFOIADELLI'
+        options:
+          - ODI_MFOIADELLI
+          - ODI_SCARRARA
         required: true
 
 jobs:
