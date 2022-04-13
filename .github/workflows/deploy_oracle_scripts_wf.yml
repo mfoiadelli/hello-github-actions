@@ -51,4 +51,5 @@ jobs:
       - name: Process changelog
         run: |
           user='USER'
-          liquibase --classpath="/usr/local/opt/liquibase:/usr/local/opt/liquibase/lib:${{needs.create-changelog.outputs.changelogDir}}" --driver=oracle.jdbc.OracleDriver --changelog-file=${{needs.create-changelog.outputs.changelogFile}} --url=${{secrets.ORACLE_DB_URL}} --username=${{secrets.ORACLE_DB_${user}}} --password=${{secrets.ORACLE_DB_PASSWORD}} update
+          variable="secrets.ORACLE_DB_${user}"
+          liquibase --classpath="/usr/local/opt/liquibase:/usr/local/opt/liquibase/lib:${{needs.create-changelog.outputs.changelogDir}}" --driver=oracle.jdbc.OracleDriver --changelog-file=${{needs.create-changelog.outputs.changelogFile}} --url=${{secrets.ORACLE_DB_URL}} --username=${variable} --password=${{secrets.ORACLE_DB_PASSWORD}} update
