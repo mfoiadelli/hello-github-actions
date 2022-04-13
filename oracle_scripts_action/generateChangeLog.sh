@@ -47,7 +47,8 @@ echo "${CHANGELOG_HEADER}" > ${changelogFile}
 
 # ENSURE TO SKIP THE FOR LOOP BODY IF NO MATCH IS FOUND (NO SQL FILES FOUND IN THE DIRECTORY)
 shopt -s nullglob
-for scriptFilePath in "$scriptsDir"/*.sql
+for scriptFilePath in "$scriptsDir"/*.[sql|sQl|sQL|sqL|Sql|SqL|SQl|SQL]
+
 do
   # EXTRACT THE AUTHOR OF THE LAST COMMIT OF THE CURRENT FILE
   scriptLastCommitAuthor=$(git log -1 "$scriptFilePath" | grep 'Author' | cut -d ' ' -f 2)
