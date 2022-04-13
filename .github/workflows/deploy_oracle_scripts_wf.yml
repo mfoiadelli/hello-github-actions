@@ -39,7 +39,7 @@ jobs:
       changelogDir: ${{ steps.generate-or-find-changelog-file.outputs.changelogDir }}
       
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
       
       - name: Get RITM path and changelog
         id: generate-or-find-changelog-file
