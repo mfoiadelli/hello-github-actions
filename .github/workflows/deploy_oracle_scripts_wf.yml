@@ -5,6 +5,7 @@ on:
       environment:
         type: environment
         required: true
+        default: 'PROD'
       # environment:
       #  type: choice
       #  description: Environment to deploy to
