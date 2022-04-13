@@ -21,6 +21,11 @@ on:
         description: 'Liquibase changelog file to be executed'
         required: false
         type: string
+      user:
+        type: choice
+        options:
+          - USER
+        required: true
 
 jobs:
   create-changelog:
@@ -50,7 +55,5 @@ jobs:
       # TODO: REPLACE WITH LIQUIBASE ACTION
       - name: Process changelog
         run: |
-          user='USER'
-          variable="secrets.ORACLE_DB_${user}"
-          echo ${!variable}
-          liquibase --classpath="/usr/local/opt/liquibase:/usr/local/opt/liquibase/lib:${{needs.create-changelog.outputs.changelogDir}}" --driver=oracle.jdbc.OracleDriver --changelog-file=${{needs.create-changelog.outputs.changelogFile}} --url=${{secrets.ORACLE_DB_URL}} --username=${variable} --password=${{secrets.ORACLE_DB_PASSWORD}} update
+          user=${{ secrets[format('secrets.ORACLE_DB_{0}', github.event.inputs.user)] }}
+          liquibase --classpath="/usr/local/opt/liquibase:/usr/local/opt/liquibase/lib:${{needs.create-changelog.outputs.changelogDir}}" --driver=oracle.jdbc.OracleDriver --changelog-file=${{needs.create-changelog.outputs.changelogFile}} --url=${{secrets.ORACLE_DB_URL}} --username=${user} --password=${{secrets.ORACLE_DB_PASSWORD}} update
