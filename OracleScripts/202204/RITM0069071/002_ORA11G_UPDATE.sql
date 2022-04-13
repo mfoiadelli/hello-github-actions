@@ -1,4 +1,4 @@
 update utente_test_liquibase
-set company = 'SCS' where cognome='Carrara';
+set companyAAA = 'SCS' where cognome='Carrara';
 
 Commit;
