@@ -49,4 +49,6 @@ jobs:
     steps:
       # TODO: REPLACE WITH LIQUIBASE ACTION
       - name: Process changelog
-        run: liquibase --classpath="/usr/local/opt/liquibase:/usr/local/opt/liquibase/lib:${{needs.create-changelog.outputs.changelogDir}}" --driver=oracle.jdbc.OracleDriver --changelog-file=${{needs.create-changelog.outputs.changelogFile}} --url=${{secrets.ORACLE_DB_URL}} --username=${{secrets.ORACLE_DB_USER}} --password=${{secrets.ORACLE_DB_PASSWORD}} update
+        run: |
+          user='USER'
+          liquibase --classpath="/usr/local/opt/liquibase:/usr/local/opt/liquibase/lib:${{needs.create-changelog.outputs.changelogDir}}" --driver=oracle.jdbc.OracleDriver --changelog-file=${{needs.create-changelog.outputs.changelogFile}} --url=${{secrets.ORACLE_DB_URL}} --username=${{secrets.ORACLE_DB_${user}}} --password=${{secrets.ORACLE_DB_PASSWORD}} update
