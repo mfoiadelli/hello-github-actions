@@ -1,0 +1,1 @@
+truncate table odi_scarrara.utente_test_liquibase;
