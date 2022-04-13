@@ -22,9 +22,9 @@ on:
         required: false
         type: string
       user:
-        type: choice
-        options:
-          - USER
+        description: 'Database connection user'
+        type: string
+        default: 'USER'
         required: true
 
 jobs:
