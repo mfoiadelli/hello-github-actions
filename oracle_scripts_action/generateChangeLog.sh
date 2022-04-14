@@ -23,7 +23,8 @@ providedFileName=$3
 [[ ! $ritm ]] && echo "::error::ERROR: Please provide the path to the directory containing the scripts to be deployed" && exit 1
 [[ ! $environment ]] && echo "::error::ERROR: Please provide the path to the directory containing the scripts to be deployed" && exit 1
 
-scriptsDir=$(find -E ${GITHUB_WORKSPACE} -regex "${GITHUB_WORKSPACE}/OracleScripts/[0-9]{6}/${ritm}")
+cd ${GITHUB_WORKSPACE}
+scriptsDir=$(find . -regex "./OracleScripts/[0-9][0-9][0-9][0-9][0-9][0-9]/${ritm}")
 [[ ! $scriptsDir ]] && echo "::error::ERROR: directory ${scriptsDir} doesn't exist!" && exit 1
 
 # IF A VALID CHANGELOG FILE HAS BEEN PROVIDED THEN BUILD THE PATH, RETURN IT WITH THE FILE NAME AND EXIT. EXIT WITH ERROR OTHERWISE
@@ -47,17 +48,15 @@ echo "${CHANGELOG_HEADER}" > ${changelogFile}
 
 # ENSURE TO SKIP THE FOR LOOP BODY IF NO MATCH IS FOUND (NO SQL FILES FOUND IN THE DIRECTORY)
 shopt -s nullglob
-for scriptFilePath in "$scriptsDir"/*.sql
+for scriptFilePath in ./*.sql
 
 do
   # EXTRACT THE AUTHOR OF THE LAST COMMIT OF THE CURRENT FILE
   scriptLastCommitAuthor=$(git log -1 "$scriptFilePath" | grep 'Author' | cut -d ' ' -f 2)
-  # GET THE NAME OF THE DIRECTORY (THE RITM NAME BASED ON THE GIT REPO NAMING CONVENTION)
-  scriptRitmName=$(basename "$(dirname "${scriptFilePath}")")
   # GET THE NAME OF THE SQL FILE
   scriptFileName=$(basename "${scriptFilePath}")
   # CREATE THE CHANGE SET FOR THIS FILE
-  changeset="            <changeSet author=\"${scriptLastCommitAuthor}\" id=\"${scriptRitmName}_${scriptFileName}\">
+  changeset="            <changeSet author=\"${scriptLastCommitAuthor}\" id=\"${ritm}_${scriptFileName}\">
                 <sqlFile dbms=\"oracle\"
                     encoding=\"UTF-8\"
                     endDelimiter=\";\"
