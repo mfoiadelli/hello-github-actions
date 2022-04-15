@@ -27,7 +27,7 @@ echo "::warning::STARTING CHANGELOG GENERATION FOR RITM ${ritm} [ENV: ${environm
 [[ ! $environment ]] && echo "::error::ERROR: Please provide the path to the directory containing the scripts to be deployed" && exit 1
 
 # CD TO THE GITHUB WORKSPACE DIRECTORY
-cd ${GITHUB_WORKSPACE} || echo "::error::ERROR: Cannot find directory ${GITHUB_WORKSPACE}" && exit 1
+cd ${GITHUB_WORKSPACE}
 
 # LOOK FOR THE DIRECTORY TO PROCESS "./OracleScripts/<YYYYMM>/<RITM>
 scriptsDir=$(find . -regex "./OracleScripts/[0-9][0-9][0-9][0-9][0-9][0-9]/${ritm}")
