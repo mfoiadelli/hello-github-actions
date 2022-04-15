@@ -21,11 +21,11 @@ dbSecret=$3
 providedFileName=$4
 
 #PARSE DATABASE NAME FROM SECRET IN INPUT 3
-if [[ "${dbSecret}" =~ ^##(.+)##$ ]] 
+if [[ ${dbSecret} =~ ^##(.+)##$ ]] 
      then
           databaseName=${BASH_REMATCH[1]} 
 else 
-     echo "::error::Error: Invalid format for parameter databaseName" 
+     echo "::error::Error: Invalid format for parameter databaseName [${dbSecret}]" 
      exit 1
 fi
 
