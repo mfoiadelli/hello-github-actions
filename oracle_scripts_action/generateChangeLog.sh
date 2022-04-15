@@ -20,7 +20,13 @@ environment=$2
 providedFileName=$4
 
 #PARSE DATABASE NAME FROM SECRET IN INPUT 3
-[[ ${3} =~ ^##(.+)##$ ]] && databaseName=${BASH_REMATCH[1]} || (echo "::error::Error: Invalid format for parameter databaseName" && exit 1)
+if [[ ${3} =~ ^##(.+)##$ ]] 
+     then
+          databaseName=${BASH_REMATCH[1]} 
+else 
+     echo "::error::Error: Invalid format for parameter databaseName" 
+     exit 1
+fi
 
 # IF THE PATH WAS NOT PROVIDED EXIT
 [[ ! $ritm ]] && echo "::error::ERROR: Please provide the path to the directory containing the scripts to be deployed" && exit 1
