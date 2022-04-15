@@ -1,1 +1,1 @@
-## Oracle SQL deploty GitHub Action
+## Oracle SQL deploty GitHub Actions
