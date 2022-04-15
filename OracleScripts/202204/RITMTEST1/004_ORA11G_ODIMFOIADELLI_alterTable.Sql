@@ -1,2 +1,2 @@
 alter table utente_test_liquibase
-add column (cell varchar2(10));
+add column cell_num varchar2(10);
