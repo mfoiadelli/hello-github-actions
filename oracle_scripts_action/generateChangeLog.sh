@@ -17,7 +17,7 @@ usage() {
 # READ THE PARAMETER CONTAINING THE PATH TO THE SCRIPTS.
 ritm=$1
 environment=$2
-dbSecret=$3
+dbSecret=##ORA11G##
 providedFileName=$4
 
 #PARSE DATABASE NAME FROM SECRET IN INPUT 3
