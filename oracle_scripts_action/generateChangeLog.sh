@@ -55,11 +55,11 @@ echo "${CHANGELOG_HEADER}" > ${changelogFile}
 
 # ENSURE TO SKIP THE FOR LOOP BODY IF NO MATCH IS FOUND (NO SQL FILES FOUND IN THE DIRECTORY)
 shopt -s nullglob extglob nocaseglob
-fileNameRegex="[0-9]{3}_${databaseName}*\.(sql|plsql)"
+fileNameRegex="^[0-9]{3}_${databaseName}_.+\.(sql|plsql)$"
 for scriptFilePath in ./*.sql ./*.plsql
 do
      echo $(basename "${scriptFilePath}")
-     if [[ $(basename "${scriptFilePath}") =~ [0-9]{3}_ORA11G_*\.sql ]] 
+     if [[ $(basename "${scriptFilePath}") =~ fileNameRegex ]] 
           then
                echo "${scriptFilePath} matches"
      fi
