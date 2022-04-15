@@ -17,11 +17,11 @@ usage() {
 # READ THE PARAMETER CONTAINING THE PATH TO THE SCRIPTS.
 ritm=$1
 environment=$2
-dbSecret=$3
+dbSecretName=$3
 providedFileName=$4
 
 #PARSE DATABASE NAME FROM SECRET IN INPUT 3
-if [[ ${dbSecret} =~ ^--(.+)--$ ]] 
+if [[ ${dbSecretName} =~ ^--(.+)--$ ]] 
      then
           databaseName=${BASH_REMATCH[1]} 
 else 
@@ -59,7 +59,7 @@ CHANGELOG_HEADER='<?xml version="1.0" encoding="UTF-8"?>
 '
 
 # CREATE AND INITIALIZE THE CHANGELOG FILE WRITING ITS XML HEADER
-changelogFile=${environment}_${ritm}_${datatbaseName}_changelog.xml
+changelogFile=${environment}_${ritm}_${databaseName}_changelog.xml
 echo "${CHANGELOG_HEADER}" > ${changelogFile}
 
 # ENSURE TO SKIP THE FOR LOOP BODY IF NO MATCH IS FOUND (NO SQL FILES FOUND IN THE DIRECTORY)
