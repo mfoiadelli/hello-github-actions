@@ -1,0 +1,64 @@
+name: Deploy Oracle Scripts
+on: 
+  workflow_dispatch:
+    inputs:
+      environment:
+        type: environment
+        required: true
+        default: 'TEST'
+      # environment:
+      #  type: choice
+      #  description: Environment to deploy to
+      #  options: 
+      #  - TEST
+      #  - PROD
+      #  required: true
+      RITM:
+        description: 'RITM name'     
+        required: true
+        type: string
+      changelog-file:
+        description: 'Liquibase changelog file to be executed'
+        required: false
+        type: string
+      user:
+        description: 'Database connection user'
+        type: choice
+        default: 'ODI_MFOIADELLI'
+        options:
+          - ODI_MFOIADELLI
+          - ODI_SCARRARA
+        required: true
+
+jobs:
+  create-changelog:
+    name: Create Liquibase changelog
+    runs-on: self-hosted
+    environment: ${{github.event.inputs.environment}}
+    outputs:
+      changelogFile: ${{ steps.generate-or-find-changelog-file.outputs.changelogFile }}
+      changelogDir: ${{ steps.generate-or-find-changelog-file.outputs.changelogDir }}
+      
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Get RITM path and changelog
+        id: generate-or-find-changelog-file
+        uses: ./oracle_scripts_action
+        with:
+          RITM: ${{github.event.inputs.RITM}}
+          environment: ${{github.event.inputs.environment}}
+          databaseName: ${{secrets.ORACLE_DB_NAME}}
+          changelog-file: ${{github.event.inputs.changelog-file}}
+          
+  process-changelog:
+    name: Process Liquibase changelog
+    runs-on: self-hosted
+    needs: [ create-changelog ]
+    environment: ${{github.event.inputs.environment}}
+    steps:
+      # TODO: REPLACE WITH LIQUIBASE ACTION
+      - name: Process changelog
+        run: |
+          pwd=${{ secrets[format('ORACLE_DB_{0}_PASSWORD', github.event.inputs.user)] }}
+          liquibase --classpath="/usr/local/opt/liquibase:/usr/local/opt/liquibase/lib:${{needs.create-changelog.outputs.changelogDir}}" --driver=oracle.jdbc.OracleDriver --changelog-file=${{needs.create-changelog.outputs.changelogFile}} --url=${{secrets.ORACLE_DB_URL}} --username=${{github.event.inputs.user}} --password=${pwd} update
