@@ -17,7 +17,7 @@ usage() {
 # READ THE PARAMETER CONTAINING THE PATH TO THE SCRIPTS.
 ritm=$1
 environment=$2
-databaseName=$3
+databaseName=ORA11G
 providedFileName=$4
 
 echo "::warning::STARTING CHANGELOG GENERATION FOR RITM ${ritm} [ENV: ${environment} - DB: ${databaseName}]"
