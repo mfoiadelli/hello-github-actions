@@ -59,7 +59,7 @@ fileNameRegex="[0-9]{3}_${databaseName}*\.(sql|plsql)"
 for scriptFilePath in ./*.sql ./*.plsql
 do
      echo ${$(basename "${scriptFilePath}")}
-     if [ $(basename "${scriptFilePath}") =~ $fileNameRegex ] 
+     if [[ $(basename "${scriptFilePath}") =~ [0-9]{3}_${databaseName}*\.(sql|plsql) ]] 
           then
                echo "${scriptFilePath} matches"
      fi
