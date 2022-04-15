@@ -34,7 +34,7 @@ populateChangeLog() {
 
   # ENSURE TO SKIP THE FOR LOOP BODY IF NO MATCH IS FOUND (NO SQL FILES FOUND IN THE DIRECTORY)
   shopt -s nullglob extglob nocaseglob
-  fileNameRegex="[0-9]{3}_${databaseName}_.+\.sql$"
+  fileNameRegex="[0-9]{3}_${databaseName}_.+\.(sql|plsql)$"
   for scriptFilePath in ./*.sql ./*.plsql
   do
     # GET THE NAME OF THE SQL FILE
