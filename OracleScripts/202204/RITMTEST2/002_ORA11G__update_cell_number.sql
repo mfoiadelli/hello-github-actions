@@ -6,4 +6,6 @@ UPDATE utente_test_liquibase
                                 from utente_test_liquibase
                             ) x
                             where x.nome = utente_test_liquibase.nome AND x.cognome = utente_test_liquibase.cognome)
-                            where cell_num is null
+                            where cell_num is null;
+                            
+                            commit;
