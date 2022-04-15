@@ -37,6 +37,7 @@ scriptsDir=$(find . -regex "./OracleScripts/[0-9][0-9][0-9][0-9][0-9][0-9]/${rit
 [[ -n ${providedFileName} ]] && [[ -f ${scriptsDir}/${providedFileName} ]] && echo "::set-output name=changelogFile::${providedFileName}" && echo "::set-output name=changelogDir::${scriptsDir}" && exit 0 || [[ -n ${providedFileName} ]] && echo "::error::The changelog file [ ${scriptsDir}/${providedFileName} ] does not exist! Aborting..." && exit 1
 
 # MOVE TO THE DIRECTORY CONTAINING THE SQL SCRIPTS FOR THE RITM
+echo "::warning::CD to DIR ${scriptsDir} from $(pwd)"
 cd "$scriptsDir" || exit 1
 echo "Processing sql files in ${scriptsDir} directory..."
 
