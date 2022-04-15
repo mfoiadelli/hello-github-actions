@@ -34,6 +34,7 @@ jobs:
   create-changelog:
     name: Create Liquibase changelog
     runs-on: self-hosted
+    environment: ${{github.event.inputs.environment}}
     outputs:
       changelogFile: ${{ steps.generate-or-find-changelog-file.outputs.changelogFile }}
       changelogDir: ${{ steps.generate-or-find-changelog-file.outputs.changelogDir }}
@@ -47,6 +48,7 @@ jobs:
         with:
           RITM: ${{github.event.inputs.RITM}}
           environment: ${{github.event.inputs.environment}}
+          databaseName: ${{secrets.ORACLE_DB_NAME}}
           changelog-file: ${{github.event.inputs.changelog-file}}
           
   process-changelog:
