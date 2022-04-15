@@ -37,8 +37,8 @@ scriptsDir=$(find . -regex "./OracleScripts/[0-9][0-9][0-9][0-9][0-9][0-9]/${rit
 [[ -n ${providedFileName} ]] && [[ -f ${scriptsDir}/${providedFileName} ]] && echo "::set-output name=changelogFile::${providedFileName}" && echo "::set-output name=changelogDir::${scriptsDir}" && exit 0 || [[ -n ${providedFileName} ]] && echo "::error::The changelog file [ ${scriptsDir}/${providedFileName} ] does not exist! Aborting..." && exit 1
 
 # MOVE TO THE DIRECTORY CONTAINING THE SQL SCRIPTS FOR THE RITM
-echo "::warning::CD to DIR ${scriptsDir} from $(pwd)"
-cd "$scriptsDir" || exit 1
+echo "::warning::CD to DIR ${scriptsDir}"
+cd "$scriptsDir"
 echo "Processing sql files in ${scriptsDir} directory..."
 
 # THE HEADER OF THE LIQUIBASE CHANGELOG FILE
@@ -50,7 +50,7 @@ CHANGELOG_HEADER='<?xml version="1.0" encoding="UTF-8"?>
 '
 
 # CREATE AND INITIALIZE THE CHANGELOG FILE WRITING ITS XML HEADER
-changelogFile=${environment}_${ritm}_changelog.xml
+changelogFile=${environment}_${databaseName}_${ritm}_changelog.xml
 echo "${CHANGELOG_HEADER}" > ${changelogFile}
 
 # ENSURE TO SKIP THE FOR LOOP BODY IF NO MATCH IS FOUND (NO SQL FILES FOUND IN THE DIRECTORY)
