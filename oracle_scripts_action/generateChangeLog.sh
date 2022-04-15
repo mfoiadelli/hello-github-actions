@@ -58,7 +58,8 @@ shopt -s nullglob extglob nocaseglob
 fileNameRegex="[0-9]{3}_${databaseName}*\.(sql|plsql)"
 for scriptFilePath in ./*.sql ./*.plsql
 do
-     echo ${scriptFilePaht}
+     echo ${scriptFilePath}
+     [[ $scriptFileName =~ $fileNameRegex ]] && echo "${scriptFilePath} matches"
 done
 for scriptFilePath in ./*.sql ./*.plsql
 do
