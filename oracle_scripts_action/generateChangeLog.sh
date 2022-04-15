@@ -17,11 +17,11 @@ usage() {
 # READ THE PARAMETER CONTAINING THE PATH TO THE SCRIPTS.
 ritm=$1
 environment=$2
-dbSecret=##ORA11G##
+dbSecret=$3
 providedFileName=$4
 
 #PARSE DATABASE NAME FROM SECRET IN INPUT 3
-if [[ ${dbSecret} =~ ^##(.+)##$ ]] 
+if [[ "${dbSecret}" =~ ^##(.+)##$ ]] 
      then
           databaseName=${BASH_REMATCH[1]} 
 else 
