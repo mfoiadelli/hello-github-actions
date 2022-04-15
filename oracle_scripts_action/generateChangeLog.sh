@@ -8,7 +8,7 @@ usage() {
      echo "The utility will return to the github action the directory containing the changelog file and its name."
      echo "If an existing changelog file is provided as third parameter, this command will return the path of the directory containing and the file's name to the github action."
      echo
-     echo "Syntax: generateChangeLog.sh <RITM_NAME> <ENVIRONMENT> [EXISTING_CHANGELOG_FILE]"
+     echo "Syntax: generateChangeLog.sh <RITM_NAME> <ENVIRONMENT> <DATABASE_NAME> [EXISTING_CHANGELOG_FILE]"
      echo
 
      exit 1
@@ -17,13 +17,17 @@ usage() {
 # READ THE PARAMETER CONTAINING THE PATH TO THE SCRIPTS.
 ritm=$1
 environment=$2
-providedFileName=$3
+databaseName=$3
+providedFileName=$4
 
 # IF THE PATH WAS NOT PROVIDED EXIT
 [[ ! $ritm ]] && echo "::error::ERROR: Please provide the path to the directory containing the scripts to be deployed" && exit 1
 [[ ! $environment ]] && echo "::error::ERROR: Please provide the path to the directory containing the scripts to be deployed" && exit 1
 
-cd ${GITHUB_WORKSPACE}
+# CD TO THE GITHUB WORKSPACE DIRECTORY
+cd ${GITHUB_WORKSPACE} || echo "::error::ERROR: Cannot find directory ${GITHUB_WORKSPACE}" && exit 1
+
+# LOOK FOR THE DIRECTORY TO PROCESS "./OracleScripts/<YYYYMM>/<RITM>
 scriptsDir=$(find . -regex "./OracleScripts/[0-9][0-9][0-9][0-9][0-9][0-9]/${ritm}")
 [[ ! $scriptsDir ]] && echo "::error::ERROR: directory ${scriptsDir} doesn't exist!" && exit 1
 
@@ -47,19 +51,28 @@ changelogFile=${environment}_${ritm}_changelog.xml
 echo "${CHANGELOG_HEADER}" > ${changelogFile}
 
 # ENSURE TO SKIP THE FOR LOOP BODY IF NO MATCH IS FOUND (NO SQL FILES FOUND IN THE DIRECTORY)
-shopt -s nullglob
-for scriptFilePath in ./*.sql
-
+shopt -s nullglob extglob nocaseglob
+fileNameRegex="[0-9]{3}_${databaseName}*\.(sql|plsql)"
+for scriptFilePath in ./*.sql ./*.plsql
 do
+
+  # GET THE NAME OF THE SQL FILE AND CHECK IF IT MATCHES THE DB NAME BASED PATTERN 
+  scriptFileName=$(basename "${scriptFilePath}")
+  [[ $scriptFileName =~ $fileNameRegex ]] || continue
+  
   # EXTRACT THE AUTHOR OF THE LAST COMMIT OF THE CURRENT FILE
   scriptLastCommitAuthor=$(git log -1 "$scriptFilePath" | grep 'Author' | cut -d ' ' -f 2)
-  # GET THE NAME OF THE SQL FILE
-  scriptFileName=$(basename "${scriptFilePath}")
+  
+  endDelimiter=;
+  if [ "${scriptFileName##*\.}" = "plsql" ]
+   then
+    endDelimiter=/
+  fi
   # CREATE THE CHANGE SET FOR THIS FILE
   changeset="            <changeSet author=\"${scriptLastCommitAuthor}\" id=\"${ritm}_${scriptFileName}\">
                 <sqlFile dbms=\"oracle\"
                     encoding=\"UTF-8\"
-                    endDelimiter=\";\"
+                    endDelimiter=\"${endDelimiter}\"
                     path=\"./${scriptFileName}\"
                     relativeToChangelogFile=\"true\"
                     splitStatements=\"true\"
@@ -75,4 +88,7 @@ echo "</databaseChangeLog>" >> ${changelogFile}
 # OUTPUT THE RESULT TO GITHUB ACTION AS changelogFilePath VARIABLE
 echo "::set-output name=changelogFile::${changelogFile}"
 echo "::set-output name=changelogDir::${scriptsDir}"
+
+shopt -u nullglob extglob nocaseglob
+
 exit 0
