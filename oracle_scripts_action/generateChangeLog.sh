@@ -1,19 +1,5 @@
 #!/usr/bin/env bash
 
-usage() {
-     # Display Help
-     echo
-     echo "generateChangeLog.sh"
-     echo "Utility for generating Liquibase changelog xml file for the script in the directory named as the RITM provided."
-     echo "The utility will return to the github action the directory containing the changelog file and its name."
-     echo "If an existing changelog file is provided as third parameter, this command will return the path of the directory containing and the file's name to the github action."
-     echo
-     echo "Syntax: generateChangeLog.sh <RITM_NAME> <ENVIRONMENT> <DATABASE_NAME> [EXISTING_CHANGELOG_FILE]"
-     echo
-
-     exit 1
-}
-
 validateInput() {
   # IF THE PATH WAS NOT PROVIDED EXIT
   [[ ! $1 ]] && echo "::error::ERROR: Please provide the path to the directory containing the scripts to be deployed" && exit 1
@@ -26,7 +12,7 @@ extractDatabaseNameFromSecret() {
        then
             databaseName=${BASH_REMATCH[1]}
   else
-       echo "::error::Error: Invalid format for parameter databaseName [${secret}]"
+       echo "::error::Error: Invalid format for parameter databaseName"
        exit 1
   fi
 }
@@ -44,7 +30,7 @@ populateChangeLog() {
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
   ' > "${1}"
-  
+
   # ENSURE TO SKIP THE FOR LOOP BODY IF NO MATCH IS FOUND (NO SQL FILES FOUND IN THE DIRECTORY)
   shopt -s nullglob extglob nocaseglob
   fileNameRegex="[0-9]{3}_${databaseName}_.+\.sql$"
@@ -52,13 +38,13 @@ populateChangeLog() {
   do
     # GET THE NAME OF THE SQL FILE
     scriptFileName=$(basename "${scriptFilePath}")
-    
+
     # CHECK IF THE FILE NAME MATCHES THE PATTERN. SKIP THE FILE IF NOT.
     [[ $scriptFileName =~ $fileNameRegex ]] || continue
-  
+
     # EXTRACT THE AUTHOR OF THE LAST COMMIT OF THE CURRENT FILE
     scriptLastCommitAuthor=$(git log -1 "$scriptFilePath" | grep 'Author' | cut -d ' ' -f 2)
-  
+
     endDelimiter=";"
     if [ "${scriptFileName##*\.}" = "plsql" ]
      then
