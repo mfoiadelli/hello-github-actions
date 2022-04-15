@@ -20,6 +20,8 @@ environment=$2
 databaseName=$3
 providedFileName=$4
 
+echo "::warning::STARTING CHANGELOG GENERATION FOR RITM ${ritm} [ENV: ${environment} - DB: ${databaseName}]"
+
 # IF THE PATH WAS NOT PROVIDED EXIT
 [[ ! $ritm ]] && echo "::error::ERROR: Please provide the path to the directory containing the scripts to be deployed" && exit 1
 [[ ! $environment ]] && echo "::error::ERROR: Please provide the path to the directory containing the scripts to be deployed" && exit 1
