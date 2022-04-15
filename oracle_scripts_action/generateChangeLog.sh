@@ -74,10 +74,10 @@ do
   # EXTRACT THE AUTHOR OF THE LAST COMMIT OF THE CURRENT FILE
   scriptLastCommitAuthor=$(git log -1 "$scriptFilePath" | grep 'Author' | cut -d ' ' -f 2)
   
-  endDelimiter=;
+  endDelimiter=";"
   if [ "${scriptFileName##*\.}" = "plsql" ]
    then
-    endDelimiter=/
+    endDelimiter="/"
   fi
   # CREATE THE CHANGE SET FOR THIS FILE
   changeset="            <changeSet author=\"${scriptLastCommitAuthor}\" id=\"${ritm}_${scriptFileName}\">
