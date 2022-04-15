@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+################# UTILITY FUNTIONS ##################### 
 validateInput() {
   # IF THE PATH WAS NOT PROVIDED EXIT
   [[ ! $1 ]] && echo "::error::ERROR: Please provide the path to the directory containing the scripts to be deployed" && exit 1
@@ -67,7 +68,9 @@ populateChangeLog() {
   # CLOSE THE CHANGELOG FILE MAIN TAG
   echo "</databaseChangeLog>" >> ${changelogFile}
 }
+################# END OF UTILITY FUNTIONS #####################
 
+##################### EXECTUTION LOGIC ########################
 validateInput $1 $2 $3
 
 # READ THE PARAMETER CONTAINING THE PATH TO THE SCRIPTS.
