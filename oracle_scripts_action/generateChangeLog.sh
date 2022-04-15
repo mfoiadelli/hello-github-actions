@@ -17,8 +17,10 @@ usage() {
 # READ THE PARAMETER CONTAINING THE PATH TO THE SCRIPTS.
 ritm=$1
 environment=$2
-databaseName=$3
 providedFileName=$4
+
+#PARSE DATABASE NAME FROM SECRET IN INPUT 3
+[[ ${3} =~ ^##(.+)##$ ]] && databaseName=${BASH_REMATCH[1]} || (echo "::error::Error: Invalid format for parameter databaseName" && exit 1)
 
 # IF THE PATH WAS NOT PROVIDED EXIT
 [[ ! $ritm ]] && echo "::error::ERROR: Please provide the path to the directory containing the scripts to be deployed" && exit 1
@@ -50,7 +52,7 @@ CHANGELOG_HEADER='<?xml version="1.0" encoding="UTF-8"?>
 '
 
 # CREATE AND INITIALIZE THE CHANGELOG FILE WRITING ITS XML HEADER
-changelogFile=${environment}_${ritm}_changelog.xml
+changelogFile=${environment}_${ritm}_${datatbaseName}_changelog.xml
 echo "${CHANGELOG_HEADER}" > ${changelogFile}
 
 # ENSURE TO SKIP THE FOR LOOP BODY IF NO MATCH IS FOUND (NO SQL FILES FOUND IN THE DIRECTORY)
