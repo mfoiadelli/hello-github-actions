@@ -17,11 +17,8 @@ usage() {
 # READ THE PARAMETER CONTAINING THE PATH TO THE SCRIPTS.
 ritm=$1
 environment=$2
-databaseName=ORA11G
+databaseName=$3
 providedFileName=$4
-
-echo "::warning DB: ${databaseName}"
-echo "::warning::STARTING CHANGELOG GENERATION FOR RITM ${ritm} [ENV: ${environment} - DB: ${databaseName}]"
 
 # IF THE PATH WAS NOT PROVIDED EXIT
 [[ ! $ritm ]] && echo "::error::ERROR: Please provide the path to the directory containing the scripts to be deployed" && exit 1
@@ -59,6 +56,10 @@ echo "${CHANGELOG_HEADER}" > ${changelogFile}
 # ENSURE TO SKIP THE FOR LOOP BODY IF NO MATCH IS FOUND (NO SQL FILES FOUND IN THE DIRECTORY)
 shopt -s nullglob extglob nocaseglob
 fileNameRegex="[0-9]{3}_${databaseName}*\.(sql|plsql)"
+for scriptFilePath in ./*.sql ./*.plsql
+do
+     echo ${scriptFilePaht}
+done
 for scriptFilePath in ./*.sql ./*.plsql
 do
 
