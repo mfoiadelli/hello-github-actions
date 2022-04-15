@@ -1,5 +1,9 @@
-update utente_test_liquibase
-set cell_num=''||circle_area(ut_rn.rowNum)
-FROM (SELECT nome, ROW_NUMBER() OVER (ORDER BY nome) AS rowNum FROM utente_test_liquibase) ut_rn;
-where cell_num is not null;
-commit;
+UPDATE utente_test_liquibase
+     SET cell_num = (select ''||circle_area(rn) 
+                             from (
+                                select nome, cognome,
+                                      row_number() over (order by nome, cognome) AS RN
+                                from utente_test_liquibase
+                            ) x
+                            where x.nome = utente_test_liquibase.nome AND x.cognome = utente_test_liquibase.cognome)
+                            where cell_num is null
