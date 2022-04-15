@@ -38,12 +38,12 @@ findScriptsDirectory() {
 
 populateChangeLog() {
   # THE HEADER OF THE LIQUIBASE CHANGELOG FILE
-  echo'<?xml version="1.0" encoding="UTF-8"?>
+  echo '<?xml version="1.0" encoding="UTF-8"?>
   <databaseChangeLog
              xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
-  ' > ${1}
+  ' > "${1}"
   
   # ENSURE TO SKIP THE FOR LOOP BODY IF NO MATCH IS FOUND (NO SQL FILES FOUND IN THE DIRECTORY)
   shopt -s nullglob extglob nocaseglob
