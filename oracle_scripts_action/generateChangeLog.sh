@@ -20,6 +20,7 @@ environment=$2
 databaseName=ORA11G
 providedFileName=$4
 
+echo "::warning DB: ${databaseName}"
 echo "::warning::STARTING CHANGELOG GENERATION FOR RITM ${ritm} [ENV: ${environment} - DB: ${databaseName}]"
 
 # IF THE PATH WAS NOT PROVIDED EXIT
