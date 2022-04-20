@@ -1,0 +1,46 @@
+name: ODI - Import Objects
+on: 
+  workflow_dispatch:
+    inputs:
+      environment:
+        type: environment
+        required: true
+        default: 'TEST'
+      RITM:
+        description: 'Directory of the RITM to be installed'     
+        required: true
+        type: string
+      user:
+        description: 'ODI connection user'
+        type: choice
+        default: 'ODI_MFOIADELLI'
+        options:
+          - ODI_MFOIADELLI
+          - ODI_SCARRARA
+        required: true
+
+jobs:
+  import-objects:
+    name: Import ODI objects
+    runs-on: self-hosted
+    environment: ${{github.event.inputs.environment}}
+    
+    steps:
+      - name: Code Checkout
+        uses: actions/checkout@v3
+      
+      - name: Import ODI Objects
+        id: generate-or-find-changelog-file
+        run: |
+          propertyFile=/tmp/connection.properties
+          scriptsDir=$(find . -regex "./ODI/[0-9][0-9][0-9][0-9][0-9][0-9]/${{ github.event.inputs.RITM }}/objects")
+          [[ ! $scriptsDir ]] && echo "::error::ERROR: directory ${{ github.event.inputs.RITM }} doesn't exist!" && exit 1
+          echo "url=${{ secrets.ODI_DB_URL }}" > propertyFile
+          echo "schema=${{ secrets.ODI_DB_SCHEMA }}" >> propertyFile
+          echo "schemaPwd=${{ secrets.ODI_DB_SCHEMA_PASSWORD }}" >> propertyFile
+          echo "workrep=${{ secrets.ODI_WORK_REPOSITORY }}" >> propertyFile
+          echo "odiUser=${{ secrets.ODI_USER }}" >> propertyFile
+          echo "odiUserPwd={{ secrets.ODI_USER_PASSWORD }}" >> propertyFile
+          
+          /Users/matteofoiadelli/Documents/Development/OdiUtils/src/import-objects.sh -c ${propertyFile} ${scriptsDir}
+          
