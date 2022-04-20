@@ -63,4 +63,6 @@ jobs:
           pwd=${{ secrets[format('ORACLE_DB_{0}_PASSWORD', github.event.inputs.user)] }}
           echo "::set-output name=userPwd::$(pwd)"
       - name: Process changelog
-        run: liquibase --classpath="/usr/local/opt/liquibase:/usr/local/opt/liquibase/lib:${{needs.create-changelog.outputs.changelogDir}}" --driver=oracle.jdbc.OracleDriver --changelog-file=${{needs.create-changelog.outputs.changelogFile}} --url=${{secrets.ORACLE_DB_URL}} --username=${{github.event.inputs.user}} --password=${{steps.get-user-pwd-from-secrets.outputs.userPwd}} update
+        run: |
+          pwd=${{steps.get-user-pwd-from-secrets.outputs.userPwd}}
+          liquibase --classpath="/usr/local/opt/liquibase:/usr/local/opt/liquibase/lib:${{needs.create-changelog.outputs.changelogDir}}" --driver=oracle.jdbc.OracleDriver --changelog-file=${{needs.create-changelog.outputs.changelogFile}} --url=${{secrets.ORACLE_DB_URL}} --username=${{github.event.inputs.user}} --password=${pwd} update
