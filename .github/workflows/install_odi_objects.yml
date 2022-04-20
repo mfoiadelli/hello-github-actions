@@ -44,4 +44,5 @@ jobs:
           echo "odiUserPwd=${{ secrets.ODI_USER_PASSWORD }}" >> ${propertyFile}
           
           /Users/matteofoiadelli/Documents/Development/OdiUtils/src/import-objects.sh -c ${propertyFile} ${scriptsDir}
+          rm ${propertyFile}
           
