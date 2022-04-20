@@ -41,7 +41,7 @@ jobs:
           echo "schemaPwd=${{ secrets.ODI_DB_SCHEMA_PASSWORD }}" >> ${propertyFile}
           echo "workrep=${{ secrets.ODI_WORK_REPOSITORY }}" >> ${propertyFile}
           echo "odiUser=${{ secrets.ODI_USER }}" >> ${propertyFile}
-          echo "odiUserPwd={{ secrets.ODI_USER_PASSWORD }}" >> ${propertyFile}
+          echo "odiUserPwd=${{ secrets.ODI_USER_PASSWORD }}" >> ${propertyFile}
           
           /Users/matteofoiadelli/Documents/Development/OdiUtils/src/import-objects.sh -c ${propertyFile} ${scriptsDir}
           
