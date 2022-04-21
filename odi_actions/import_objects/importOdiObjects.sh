@@ -10,14 +10,14 @@ getOdiObjectsDirectory() {
 }
 
 generateConnectionProperties() {
-	local fileName=$(base64 /dev/urandom | tr -d 'O0Il1+/' | head -c 20)
-	connectionPropertiesFile=/tmp/${fileName}.properties
-	echo "url=${{ secrets.ODI_DB_URL }}" > ${connectionPropertiesFile}
-    echo "schema=${{ secrets.ODI_DB_SCHEMA }}" >> ${connectionPropertiesFile}
-    echo "schemaPwd=${{ secrets.ODI_DB_SCHEMA_PASSWORD }}" >> ${connectionPropertiesFile}
-    echo "workrep=${{ secrets.ODI_WORK_REPOSITORY }}" >> ${connectionPropertiesFile}
-    echo "odiUser=${{ secrets.ODI_USER }}" >> ${connectionPropertiesFile}
-    echo "odiUserPwd=${{ secrets.ODI_USER_PASSWORD }}" >> ${connectionPropertiesFile}
+   	local fileName=$(base64 /dev/urandom | tr -d 'O0Il1+/' | head -c 20)
+   	connectionPropertiesFile=/tmp/${fileName}.properties
+   	echo "url=${{ secrets.ODI_DB_URL }}" > ${connectionPropertiesFile}
+   	echo "schema=${{ secrets.ODI_DB_SCHEMA }}" >> ${connectionPropertiesFile}
+   	echo "schemaPwd=${{ secrets.ODI_DB_SCHEMA_PASSWORD }}" >> ${connectionPropertiesFile}
+   	echo "workrep=${{ secrets.ODI_WORK_REPOSITORY }}" >> ${connectionPropertiesFile}
+   	echo "odiUser=${{ secrets.ODI_USER }}" >> ${connectionPropertiesFile}
+   	echo "odiUserPwd=${{ secrets.ODI_USER_PASSWORD }}" >> ${connectionPropertiesFile}
 }
 
 validateInputs() {
