@@ -51,6 +51,6 @@ generateConnectionProperties
 echo "::info::Get Objects Directory"
 getOdiObjectsDirectory
 
-/Users/matteofoiadelli/Documents/Development/OdiUtils/src/import-objects.sh -c ${connectionPropertiesFile} ${odiObjectsDirectory}
+result=/Users/matteofoiadelli/Documents/Development/OdiUtils/src/import-objects.sh -c ${connectionPropertiesFile} ${odiObjectsDirectory}
 rm ${connectionPropertiesFile}
-exit $?
+exit $result
