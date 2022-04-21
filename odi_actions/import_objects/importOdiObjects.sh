@@ -12,8 +12,7 @@ getOdiObjectsDirectory() {
 }
 
 generateConnectionProperties() {
-   	fileName=$(base64 /dev/urandom | tr -d 'O0Il1+/' | head -c 20)
-   	connectionPropertiesFile=/tmp/${fileName}.properties
+   	connectionPropertiesFile=/tmp/connection.properties
 	echo "Creating connection property file as ${connectionPropertiesFile}"
 	
    	echo "url=${{ secrets.ODI_DB_URL }}" > ${connectionPropertiesFile}
