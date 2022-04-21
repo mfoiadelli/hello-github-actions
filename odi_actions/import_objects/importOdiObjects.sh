@@ -21,6 +21,7 @@ generateConnectionProperties() {
 }
 
 validateInputs() {
+	echo "${ritmName} - ${odiUrl} - ${odiSchema} - ${odiSchemaPwd} - ${odiWorkRepositoryName} - ${odiUsername} - ${odiSchemaPwd}"
 	[[ -z ${ritmName} ]] && echo "::error::ERROR: RITM identifier cannot be null. Please provide a valid RITM identifier." && exit 1
 	[[ -z ${odiUrl} ]] && echo "::error::ERROR: ODI URL cannot be null. Please provide a valid ODI URL." && exit 1
 	[[ -z ${odiSchema} ]] && echo "::error::ERROR: ODI Schema name cannot be null. Please provide a valid ODI Schema name." && exit 1
@@ -31,13 +32,13 @@ validateInputs() {
 }
 
 # Get the shell inputs
-ritmName=$0
-odiUrl=$1
-odiSchema=$2
-odiSchemaPwd=$3
-odiWorkRepositoryName=$4
-odiUsername=$5
-odiUserPwd=$6
+ritmName=$1
+odiUrl=$2
+odiSchema=$3
+odiSchemaPwd=$4
+odiWorkRepositoryName=$5
+odiUsername=$6
+odiUserPwd=$7
 
 validateInputs
 generateConnectionProperties
