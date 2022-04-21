@@ -52,7 +52,7 @@ getOdiObjectsDirectory
 echo " Done!"
 
 echo -n "Executing import-objects shell..."
-result=$(/Users/matteofoiadelli/Documents/Development/OdiUtils/src/import-objects.sh -c ${connectionPropertiesFile} ${odiObjectsDirectory})
+result=$(/Users/matteofoiadelli/Documents/Development/OdiUtils/src/import-objects.sh -c ${connectionPropertiesFile} ${odiObjectsDirectory}; echo $?)
 echo " Done!"
 echo "Cleaning up..."
 rm ${connectionPropertiesFile}
