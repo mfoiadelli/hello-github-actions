@@ -53,4 +53,4 @@ getOdiObjectsDirectory
 
 /Users/matteofoiadelli/Documents/Development/OdiUtils/src/import-objects.sh -c ${connectionPropertiesFile} ${odiObjectsDirectory}
 rm ${connectionPropertiesFile}
-exit 0
+exit $?
