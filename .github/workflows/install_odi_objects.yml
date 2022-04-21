@@ -31,18 +31,12 @@ jobs:
       
       - name: Import ODI Objects
         id: generate-or-find-changelog-file
-        run: |
-          cd "$GITHUB_WORKSPACE" || exit 1
-          propertyFile=/tmp/connection.properties
-          scriptsDir=$(find . -regex "./ODI/[0-9][0-9][0-9][0-9][0-9][0-9]/${{ github.event.inputs.RITM }}/objects")
-          [[ ! $scriptsDir ]] && echo "::error::ERROR: directory ${{ github.event.inputs.RITM }} doesn't exist!" && exit 1
-          echo "url=${{ secrets.ODI_DB_URL }}" > ${propertyFile}
-          echo "schema=${{ secrets.ODI_DB_SCHEMA }}" >> ${propertyFile}
-          echo "schemaPwd=${{ secrets.ODI_DB_SCHEMA_PASSWORD }}" >> ${propertyFile}
-          echo "workrep=${{ secrets.ODI_WORK_REPOSITORY }}" >> ${propertyFile}
-          echo "odiUser=${{ secrets.ODI_USER }}" >> ${propertyFile}
-          echo "odiUserPwd=${{ secrets.ODI_USER_PASSWORD }}" >> ${propertyFile}
-          
-          /Users/matteofoiadelli/Documents/Development/OdiUtils/src/import-objects.sh -c ${propertyFile} ${scriptsDir}
-          rm ${propertyFile}
-          
+        uses: ./odi_actions/importObjectsAction.yml
+        with:
+          RITM: ${{github.event.inputs.RITM}}
+          odiUrl: ${{ secrets.ODI_DB_URL }}
+          odiSchema: ${{ secrets.ODI_DB_SCHEMA }}
+          odiSchemaPwd: ${{ secrets.ODI_DB_SCHEMA_PASSWORD }}
+          odiWorkRepository: ${{ secrets.ODI_WORK_REPOSITORY }}
+          odiUsername: ${{ secrets.ODI_USER }}
+          odiUserPwd: ${{ secrets.ODI_USER_PASSWORD }}
