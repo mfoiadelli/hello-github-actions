@@ -53,8 +53,8 @@ echo " Done!"
 
 echo -n "Executing import-objects shell..."
 result=$(/Users/matteofoiadelli/Documents/Development/OdiUtils/src/import-objects.sh -c ${connectionPropertiesFile} ${odiObjectsDirectory}; echo $?)
-echo " Done!"
-echo "Cleaning up..."
+[[ ${result} -eq 0 ]] && echo " Done!" || echo "::error:: Failed!"
+echo -n "Cleaning up..."
 rm ${connectionPropertiesFile}
 echo " Done!"
 exit $result
