@@ -6,7 +6,6 @@ getOdiObjectsDirectory() {
 	echo $(pwd)
 	# FIND THE PATH TO THE ODI OBJECTS BASED ON THE RITM PROVIDED
 	odiObjectsDirectory=$(find . -regex "./ODI/[0-9][0-9][0-9][0-9][0-9][0-9]/${ritmName}/objects")
-	echo "Directory ${odiObjectsDirectory} found."
 	# IF THE DIRECTORY HASN'T BEEN FOUND THEN LOG THE ERROR AND EXIT
 	[[ ! $odiObjectsDirectory ]] && echo "::error::ERROR: Cannot find the directory corresponding to the provided RITM identifier (${ritmName})!" && exit 1
 }
@@ -51,7 +50,7 @@ echo -n "Getting Objects Directory..."
 getOdiObjectsDirectory
 echo " Done!"
 
-echo -n "Executing import-objects shell..."
+echo -n "Importing objects from directory ${odiObjectsDirectory}..."
 result=$(/Users/matteofoiadelli/Documents/Development/OdiUtils/src/import-objects.sh -c ${connectionPropertiesFile} ${odiObjectsDirectory}; echo $?)
 [[ ${result} -eq 0 ]] && echo " Done!" || echo " Failed!"
 echo -n "Cleaning up..."
