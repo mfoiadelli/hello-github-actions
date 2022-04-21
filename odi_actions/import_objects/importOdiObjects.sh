@@ -55,6 +55,6 @@ echo -n "Executing import-objects shell..."
 result=$(/Users/matteofoiadelli/Documents/Development/OdiUtils/src/import-objects.sh -c ${connectionPropertiesFile} ${odiObjectsDirectory}; echo $?)
 [[ ${result} -eq 0 ]] && echo " Done!" || echo " Failed!"
 echo -n "Cleaning up..."
-rm ${connectionPropertiesFile}
+#rm ${connectionPropertiesFile}
 echo " Done!"
 exit $result
