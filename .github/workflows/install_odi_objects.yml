@@ -10,14 +10,6 @@ on:
         description: 'Directory of the RITM to be installed'     
         required: true
         type: string
-      user:
-        description: 'ODI connection user'
-        type: choice
-        default: 'ODI_MFOIADELLI'
-        options:
-          - ODI_MFOIADELLI
-          - ODI_SCARRARA
-        required: true
 
 jobs:
   import-objects:
@@ -34,9 +26,9 @@ jobs:
         uses: ./odi_actions/import_objects
         with:
           RITM: ${{github.event.inputs.RITM}}
-          odiUrl: ${{ secrets.ODI_DB_URL }}
-          odiSchema: ${{ secrets.ODI_DB_SCHEMA }}
-          odiSchemaPwd: ${{ secrets.ODI_DB_SCHEMA_PASSWORD }}
-          odiWorkRepository: ${{ secrets.ODI_WORK_REPOSITORY }}
-          odiUsername: ${{ secrets.ODI_USER }}
-          odiUserPwd: ${{ secrets.ODI_USER_PASSWORD }}
+          odiUrl: ${{secrets.ODI_DB_URL}}
+          odiSchema: ${{secrets.ODI_DB_SCHEMA}}
+          odiSchemaPwd: ${{secrets.ODI_DB_SCHEMA_PASSWORD}}
+          odiWorkRepository: ${{secrets.ODI_WORK_REPOSITORY}}
+          odiUsername: ${{secrets.ODI_USER}}
+          odiUserPwd: ${{secrets.ODI_USER_PASSWORD}}
