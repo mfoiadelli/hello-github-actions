@@ -31,7 +31,7 @@ jobs:
       
       - name: Import ODI Objects
         id: generate-or-find-changelog-file
-        uses: ./odi_actions/importObjectsAction.yml
+        uses: ./odi_actions/import_objects
         with:
           RITM: ${{github.event.inputs.RITM}}
           odiUrl: ${{ secrets.ODI_DB_URL }}
