@@ -6,13 +6,6 @@ on:
         type: environment
         required: true
         default: 'TEST'
-      # environment:
-      #  type: choice
-      #  description: Environment to deploy to
-      #  options: 
-      #  - TEST
-      #  - PROD
-      #  required: true
       RITM:
         description: 'RITM name'     
         required: true
