@@ -3,7 +3,6 @@
 getOdiObjectsDirectory() {
 	# MOVE TO THE GITHUB CHECKOUT DIR.
 	cd "$GITHUB_WORKSPACE" || exit 1
-	echo $(pwd)
 	# FIND THE PATH TO THE ODI OBJECTS BASED ON THE RITM PROVIDED
 	odiObjectsDirectory=$(find . -regex "./ODI/[0-9][0-9][0-9][0-9][0-9][0-9]/${ritmName}/objects")
 	# IF THE DIRECTORY HASN'T BEEN FOUND THEN LOG THE ERROR AND EXIT
