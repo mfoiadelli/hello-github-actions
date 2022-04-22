@@ -1,15 +1,14 @@
 #!/bin/bash
 
 getOdiObjectsDirectory() {
-	# MOVE TO THE GITHUB CHECKOUT DIR.
+	echo "Getting Objects Directory..."
 	cd "$GITHUB_WORKSPACE" || exit 1
-	# FIND THE PATH TO THE ODI OBJECTS BASED ON THE RITM PROVIDED
 	odiObjectsDirectory=$(find . -regex "./ODI/[0-9][0-9][0-9][0-9][0-9][0-9]/${ritmName}/objects")
-	# IF THE DIRECTORY HASN'T BEEN FOUND THEN LOG THE ERROR AND EXIT
 	[[ ! $odiObjectsDirectory ]] && echo "::error::ERROR: Cannot find the directory corresponding to the provided RITM identifier (${ritmName})!" && exit 1
 }
 
 generateConnectionProperties() {
+	echo "Generating Connection Properties File..."
    	connectionPropertiesFile=/tmp/connection.properties
 	echo "url=${odiUrl}" > ${connectionPropertiesFile}
    	echo "schema=${odiSchema}" >> ${connectionPropertiesFile}
@@ -20,7 +19,7 @@ generateConnectionProperties() {
 }
 
 validateInputs() {
-	echo "${ritmName} - ${odiUrl} - ${odiSchema} - ${odiSchemaPwd} - ${odiWorkRepositoryName} - ${odiUsername} - ${odiSchemaPwd}"
+	echo "Validating Inputs..."
 	[[ -z ${ritmName} ]] && echo "::error::ERROR: RITM identifier cannot be null. Please provide a valid RITM identifier." && exit 1
 	[[ -z ${odiUrl} ]] && echo "::error::ERROR: ODI URL cannot be null. Please provide a valid ODI URL." && exit 1
 	[[ -z ${odiSchema} ]] && echo "::error::ERROR: ODI Schema name cannot be null. Please provide a valid ODI Schema name." && exit 1
@@ -39,20 +38,15 @@ odiWorkRepositoryName=$5
 odiUsername=$6
 odiUserPwd=$7
 
-echo -n "Validating Inputs..."
 validateInputs
-echo " Done!"
-echo -n "Generating Connection Properties File..."
 generateConnectionProperties
-echo " Done!"
-echo -n "Getting Objects Directory..."
 getOdiObjectsDirectory
-echo " Done!"
 
-echo -n "Importing objects from directory ${odiObjectsDirectory}..."
+echo "Importing objects from directory ${odiObjectsDirectory}..."
 result=$(/Users/matteofoiadelli/Documents/Development/OdiUtils/src/import-objects.sh -c ${connectionPropertiesFile} ${odiObjectsDirectory}; echo $?)
-[[ ${result} -eq 0 ]] && echo " Done!" || echo " Failed!"
-echo -n "Cleaning up..."
+[[ ${result} -eq 0 ]] && echo " Done!" || echo "::error::ERROR: Import process failed. Check the logs above for further details."
+
+echo "Cleaning up..."
 rm ${connectionPropertiesFile}
-echo " Done!"
+
 exit $result
