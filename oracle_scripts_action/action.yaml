@@ -30,6 +30,6 @@ runs:
       run: chmod +x ${{ github.action_path }}/generateChangeLog.sh
       shell: bash
     - id: liquibase-changelog-generator
-      run: ${{ github.action_path }}/generateChangeLog.sh ${{ inputs.RITM }} ${{ inputs.environment }} ${{ inputs.databaseName }} ${{ inputs.changelog-file }}  ${{ inputs.rollback }}
+      run: ${{ github.action_path }}/generateChangeLog.sh ${{ inputs.RITM }} ${{ inputs.environment }} ${{ inputs.databaseName }} ${{ inputs.rollback }} ${{ inputs.changelog-file }}
       shell: bash
       
