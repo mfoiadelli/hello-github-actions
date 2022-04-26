@@ -43,6 +43,7 @@ jobs:
           environment: ${{github.event.inputs.environment}}
           databaseName: ${{secrets.ORACLE_DB_NAME}}
           changelog-file: ${{github.event.inputs.changelog-file}}
+          rollback: false
           
   process-changelog:
     name: Process Liquibase changelog
