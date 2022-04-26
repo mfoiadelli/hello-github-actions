@@ -11,3 +11,4 @@ INSERT INTO utente_test_liquibase (
     'ICTeam',
     '0'
 );
+commit;
