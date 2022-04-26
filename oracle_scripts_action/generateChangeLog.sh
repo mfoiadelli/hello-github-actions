@@ -84,8 +84,8 @@ validateInput $1 $2 $3
 scriptsDirectoryName=$1
 environment=$2
 dbSecretName=$3
-providedFileName=$4
-rollback=$5
+rollback=$4
+providedFileName=$5
 
 #PARSE DATABASE NAME FROM SECRET IN INPUT 3
 extractDatabaseNameFromSecret "${dbSecretName}"
