@@ -19,8 +19,9 @@ extractDatabaseNameFromSecret() {
 }
 
 findScriptsDirectory() {
-  scriptsDir=$(find . -regex "./OracleScripts/[0-9][0-9][0-9][0-9][0-9][0-9]/${1}")
-  [[ ! $scriptsDir ]] && echo "::error::ERROR: directory ${scriptsDir} doesn't exist!" && exit 1
+  local dirName=$([[ $rollback -eq 1 ]] && echo $1/rollback || echo $1)  
+  scriptsDir=$(find . -regex "./OracleScripts/[0-9][0-9][0-9][0-9][0-9][0-9]/${dirName}")
+  [[ ! $scriptsDir ]] && echo "::error::ERROR: directory ${dirName} doesn't exist!" && exit 1
 }
 
 populateChangeLog() {
@@ -84,6 +85,7 @@ scriptsDirectoryName=$1
 environment=$2
 dbSecretName=$3
 providedFileName=$4
+rollback=$5
 
 #PARSE DATABASE NAME FROM SECRET IN INPUT 3
 extractDatabaseNameFromSecret "${dbSecretName}"
