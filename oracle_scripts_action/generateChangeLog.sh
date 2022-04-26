@@ -34,15 +34,21 @@ populateChangeLog() {
 
   # ENSURE TO SKIP THE FOR LOOP BODY IF NO MATCH IS FOUND (NO SQL FILES FOUND IN THE DIRECTORY)
   shopt -s nullglob extglob nocaseglob
-  fileNameRegex="[0-9]{3}_${databaseName}_.+\.(sql|plsql)$"
-  for scriptFilePath in ./*.sql ./*.plsql
+  fileNameRegex="[0-9]{4}_${databaseName}_.+\.(sql|plsql)$"
+  for scriptFilePath in $(find . -type f -maxdepth 1 \( -iname "*.sql" -o -iname "*.plsql" \) | sort)
   do
     # GET THE NAME OF THE SQL FILE
     scriptFileName=$(basename "${scriptFilePath}")
 
     # CHECK IF THE FILE NAME MATCHES THE PATTERN. SKIP THE FILE IF NOT.
-    [[ $scriptFileName =~ $fileNameRegex ]] || continue
+    if [[ ! $scriptFileName =~ $fileNameRegex ]] 
+      then
+        echo "::warning::File ${scriptFileName} will not be included in the changelog file: database name not matching or invalid naming pattern. Skipping it."
+        continue
+    fi
 
+    echo "Processing file: ${scriptFileName}"
+    
     # EXTRACT THE AUTHOR OF THE LAST COMMIT OF THE CURRENT FILE
     scriptLastCommitAuthor=$(git log -1 "$scriptFilePath" | grep 'Author' | cut -d ' ' -f 2)
 
@@ -102,6 +108,12 @@ populateChangeLog "${changelogFile}"
 # OUTPUT THE RESULT TO GITHUB ACTION AS changelogFilePath VARIABLE
 echo "::set-output name=changelogFile::${changelogFile}"
 echo "::set-output name=changelogDir::${scriptsDir}"
+
+echo "
+Generated changelog file content:
+
+$(cat ${changelogFile})
+"
 
 shopt -u nullglob extglob nocaseglob
 exit 0
