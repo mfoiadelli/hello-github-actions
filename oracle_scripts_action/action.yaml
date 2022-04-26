@@ -11,6 +11,10 @@ inputs:
     required: true
   changelog-file: 
     description: "The user provided changelog file name (if any)"
+  rollback: 
+    description: "If true the shell will produce the changelog file required to run the rollback scripts"
+    default: false
+    type boolean
 outputs:
   changelogFile:
     description: "The name of the changelog file to process"
@@ -26,6 +30,6 @@ runs:
       run: chmod +x ${{ github.action_path }}/generateChangeLog.sh
       shell: bash
     - id: liquibase-changelog-generator
-      run: ${{ github.action_path }}/generateChangeLog.sh ${{ inputs.RITM }} ${{ inputs.environment }} ${{ inputs.databaseName }} ${{ inputs.changelog-file }}
+      run: ${{ github.action_path }}/generateChangeLog.sh ${{ inputs.RITM }} ${{ inputs.environment }} ${{ inputs.databaseName }} ${{ inputs.changelog-file }}  ${{ inputs.rollback }}
       shell: bash
       
