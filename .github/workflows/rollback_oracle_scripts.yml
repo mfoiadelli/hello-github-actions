@@ -1,4 +1,4 @@
-name: Deploy Oracle Scripts
+name: Rollback Oracle Scripts
 on: 
   workflow_dispatch:
     inputs:
@@ -25,7 +25,7 @@ on:
 
 jobs:
   create-changelog:
-    name: Create Liquibase changelog
+    name: Create Liquibase rollback changelog
     runs-on: self-hosted
     environment: ${{github.event.inputs.environment}}
     outputs:
@@ -46,7 +46,7 @@ jobs:
           rollback: true
           
   process-changelog:
-    name: Process Liquibase changelog
+    name: Process Liquibase rollback changelog
     runs-on: self-hosted
     needs: [ create-changelog ]
     environment: ${{github.event.inputs.environment}}
