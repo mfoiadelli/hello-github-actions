@@ -15,7 +15,7 @@ on:
         required: false
         type: string
       force-scripts-execution:
-        description: 'Force all scripts re-run'
+        description: 'Force all scripts rerun'
         type: boolean
         default: false  
       user:
