@@ -1,8 +1,0 @@
-{
-    "name": "Rollback Oracle Scripts",
-    "description": "Worflow to execute oracle scripts via liquibase",
-    "iconName": rollback,
-    "categories": [
-        "SQL"
-    ]
-}
