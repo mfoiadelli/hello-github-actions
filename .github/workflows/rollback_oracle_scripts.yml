@@ -1,4 +1,4 @@
-name: ⚠️ Rollback Oracle Scripts
+name: ❗️❗️ Rollback Oracle Scripts
 on: 
   workflow_dispatch:
     inputs:
