@@ -15,6 +15,10 @@ inputs:
     description: "If true the shell will produce the changelog file required to run the rollback scripts"
     default: false
     type: boolean
+  force-scripts-execution:
+    description: "If true all the scripts in the target directory will be executed even if previously run"
+    default: false
+    type: boolean
 outputs:
   changelogFile:
     description: "The name of the changelog file to process"
@@ -30,6 +34,6 @@ runs:
       run: chmod +x ${{ github.action_path }}/generateChangeLog.sh
       shell: bash
     - id: liquibase-changelog-generator
-      run: ${{ github.action_path }}/generateChangeLog.sh ${{ inputs.RITM }} ${{ inputs.environment }} ${{ inputs.databaseName }} ${{ inputs.rollback }} ${{ inputs.changelog-file }}
+      run: ${{ github.action_path }}/generateChangeLog.sh ${{ inputs.RITM }} ${{ inputs.environment }} ${{ inputs.databaseName }} ${{ inputs.rollback }} ${{ inputs.force-scripts-execution}} ${{ inputs.changelog-file }}
       shell: bash
       
