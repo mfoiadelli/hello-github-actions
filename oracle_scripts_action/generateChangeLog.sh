@@ -104,7 +104,7 @@ cd "$scriptsDir" || exit 1
 echo "Processing sql files in ${scriptsDir} directory..."
 
 # CREATE AND INITIALIZE THE CHANGELOG FILE WRITING ITS XML HEADER
-changelogFile=${environment}_${scriptsDirectoryName}_${databaseName}_changelog.xml
+changelogFile=$([[ $rollback = true ]] && echo ${environment}_${scriptsDirectoryName}_${databaseName}_rollback_changelog.xml || echo ${environment}_${scriptsDirectoryName}_${databaseName}_changelog.xml)
 populateChangeLog "${changelogFile}"
 
 # OUTPUT THE RESULT TO GITHUB ACTION AS changelogFilePath VARIABLE
