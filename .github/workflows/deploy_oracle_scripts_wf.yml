@@ -14,6 +14,10 @@ on:
         description: 'Liquibase changelog file to be executed'
         required: false
         type: string
+      force-scripts-execution:
+        description: 'Force scripts execution even if already run'
+        type: boolean
+        default: false
       user:
         description: 'Database connection user'
         type: choice
@@ -43,6 +47,7 @@ jobs:
           environment: ${{github.event.inputs.environment}}
           databaseName: ${{secrets.ORACLE_DB_NAME}}
           changelog-file: ${{github.event.inputs.changelog-file}}
+          force-scripts-execution: ${{github.event.inputs.force-scripts-execution}}
           rollback: false
           
   process-changelog:
