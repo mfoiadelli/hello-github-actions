@@ -59,7 +59,7 @@ populateChangeLog() {
       endDelimiter="/"
     fi
     # CREATE THE CHANGE SET FOR THIS FILE
-    changeset="            <changeSet author=\"${scriptLastCommitAuthor}\" id=\"${scriptsDirectoryName}_${scriptFileName}\">
+    changeset="            <changeSet author=\"${scriptLastCommitAuthor}\" id=\"${scriptsDirectoryName}_${scriptFileName}\" runAlways=\"${forceScriptsExecution}\">
                   <sqlFile dbms=\"oracle\"
                       encoding=\"UTF-8\"
                       endDelimiter=\"${endDelimiter}\"
@@ -85,7 +85,8 @@ scriptsDirectoryName=$1
 environment=$2
 dbSecretName=$3
 rollback=$4
-providedFileName=$5
+forceScriptsExecution=$5
+providedFileName=$6
 
 #PARSE DATABASE NAME FROM SECRET IN INPUT 3
 extractDatabaseNameFromSecret "${dbSecretName}"
