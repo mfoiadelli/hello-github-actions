@@ -14,5 +14,5 @@ jobs:
         id: checkNames
         run: |
           URL="https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files"
-          filenames=$(curl -s -X GET -G $URL | awk -F, 'BEGIN {IGNORECASE=1} {for(i=NF;i>=1;i--) {if($i~/[^\[\]{},]"filename": ([^\[,{}\]]+\.(sql|plsql))/) print $i }}') 
-          echo ${filenames}
+          filenames=$(curl -s -X GET -G $URL | awk -F, 'BEGIN {IGNORECASE=1} {for(i=NF;i>=1;i--) {if($i~/[^\[\]{},]"filename": ([^\[,{}\]]+\.(sql|plsql))/) printf "%s\n" $1 }}') 
+          echo ${filenames} | awk 
