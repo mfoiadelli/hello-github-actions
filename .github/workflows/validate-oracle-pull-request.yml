@@ -21,6 +21,6 @@ jobs:
           t=$(echo "${filenames}" | awk -F'_' '{ printf "%s_%s\n", $1, $2 }')
           duplicationErrors=(`echo "${t}" | awk '{ count[toupper($0)]++ } END {  for (i in count) if (count[i] > 1) print i":"count[i] }'`)
           for duplicationInfo in "${duplicationErrors[@]}"; do   error=1;   echo "::error::Ambiguous script file name: there are ${duplicationInfo##*:} files whose names start with ${duplicationInfo%%:*}"; done
-          for scriptFilePath in $(echo "${filenames}"); do     scriptFileName=$(basename "${scriptFilePath}");      if [[ ! $scriptFileName =~ $fileNameRegex ]];       then         echo "::error file=${scriptFilePath},title=Invalid file name::SQL file ${scriptFileName} does not conform to the required naming convention: <0000-9999>_<DWH|REPLICA|ODI>_*";         error=1;     fi; done
+          for scriptFilePath in $filenames; do  echo ${scriptFilePath}; echo $(basename "${scriptFilePath}"); done
           shopt -u nullglob extglob nocaseglob
           exit $error
