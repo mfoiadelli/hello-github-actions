@@ -19,8 +19,8 @@ jobs:
           URL="https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files"
           modifiedFiles=$(curl -s -X GET -G $URL | awk -F, '{for(i=NF;i>=1;i--) {if(tolower($i)~/"filename": "oraclescripts.+/) printf "%s\n", $1 }}' | awk '{ printf "%s\n", $2 }' | tr -d '"')
          
-          sqlFiles=$(echo "${modifiedFiles}" | grep -i -E -w '(plsql|sql)$'
-          nonSqlFiles=$(echo "${modifiedFiles}" | grep -i -E -w -v '(plsql|sql)$'
+          sqlFiles=$(echo "${modifiedFiles}" | grep -i -E -w '(plsql|sql)$')
+          nonSqlFiles=$(echo "${modifiedFiles}" | grep -i -E -w -v '(plsql|sql)$')
           
           fileNameGroups=$(echo "${sqlFiles}" | awk -F'_' '{ printf "%s_%s\n", $1, $2 }')
           duplicationErrors=(`echo "${fileNameGroups}" | awk '{ count[toupper($0)]++ } END {  for (i in count) if (count[i] > 1) print i":"count[i] }'`)
