@@ -17,6 +17,9 @@ jobs:
           fileNameRegex="^[0-9]{4}_(dwh|replica|odi)_.+\.(sql|plsql)$"
           error=0
           URL="https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files"
+          files=$(curl -s -X GET -G $URL | awk -F, '{for(i=NF;i>=1;i--) {if(tolower($i)~/"filename": "oraclescripts.+/) printf "%s\n", $1 }}' | awk '{ printf "%s\n", $2 }' | tr -d '"')
+          echo "${files}"
+          
           filenames=$(curl -s -X GET -G $URL | awk -F, '{for(i=NF;i>=1;i--) {if(tolower($i)~/[^\[\]{},]"filename": ([^\[,{}\]]+\.(sql|plsql))/) printf "%s\n", $1 }}' | awk '{ printf "%s\n", $2 }' | tr -d '"')
           t=$(echo "${filenames}" | awk -F'_' '{ printf "%s_%s\n", $1, $2 }')
           duplicationErrors=(`echo "${t}" | awk '{ count[toupper($0)]++ } END {  for (i in count) if (count[i] > 1) print i":"count[i] }'`)
