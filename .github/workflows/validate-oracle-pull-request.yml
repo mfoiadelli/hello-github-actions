@@ -3,9 +3,7 @@ on:
   pull_request:
     branches:    
       - main
-  check_run:
-    types: [rerequested, created]
-      
+    
 jobs:
   check-files-names:
     name: Check Files Names
