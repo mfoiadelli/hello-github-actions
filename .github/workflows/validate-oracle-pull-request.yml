@@ -28,7 +28,7 @@ jobs:
           
           for scriptFilePath in $sqlFiles; do  scriptFileName=$(basename "${scriptFilePath}");   if [[ ! $scriptFileName =~ $fileNameRegex ]];  then echo "::error file=${scriptFilePath},title=Invalid file name::SQL file ${scriptFileName} does not conform to the required naming convention: <0000-9999>_<DWH|REPLICA|ODI>_*";         error=1;     fi; done
         
-          for nonScriptFilePath in $nonSqlFiles; do  scriptFileName=$(basename "${nonScriptFilePath}"); echo "::warning file=${scriptFilePath},title=Non SQL file extension::The extension of the file ${nonScriptFileName} is neither 'sql' nor 'plsql'"; done
+          for nonScriptFilePath in $nonSqlFiles; do  scriptFileName=$(basename "${nonScriptFilePath}"); echo "::warning file=${scriptFilePath},title=Non SQL file extension::The extension of the file ${scriptFileName} is neither 'sql' nor 'plsql'"; done
           
           shopt -u nullglob extglob nocaseglob
           exit $error
