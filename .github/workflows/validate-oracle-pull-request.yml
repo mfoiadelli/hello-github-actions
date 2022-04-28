@@ -15,5 +15,5 @@ jobs:
         run: |
           URL="https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files"
           FILES=$(curl -s -X GET -G $URL)
-          echo ${FILES} | grep -e "*.(sql|plsql)"
+          echo ${FILES} | awk -F, '{for(i=NF;i>=1;i--) {if($i~/[^\[\]{},]"filename": ([^\[,{}\]]+\.(sql|plsql))/) print $i }}' 
           
