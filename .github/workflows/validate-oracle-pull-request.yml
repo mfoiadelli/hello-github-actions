@@ -15,4 +15,4 @@ jobs:
         run: |
           URL="https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files"
           filenames=$(curl -s -X GET -G $URL | awk -F, '{for(i=NF;i>=1;i--) {if(tolower($i)~/[^\[\]{},]"filename": ([^\[,{}\]]+\.(sql|plsql))/) printf "%s\n", $1 }}' | awk '{ printf "%s\n", $2 }')
-          awk -v files=$filenames -F'_' '{ printf "%s - %s - %s\n", $0, $1, $2 }'
+          echo "${filenames}" | awk -F'_' '{ printf "%s - %s - %s\n", $0, $1, $2 }'
