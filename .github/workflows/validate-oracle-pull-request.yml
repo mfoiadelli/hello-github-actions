@@ -21,7 +21,7 @@ jobs:
           echo "${files}"
           
           filenames=$(curl -s -X GET -G $URL | awk -F, '{for(i=NF;i>=1;i--) {if(tolower($i)~/[^\[\]{},]"filename": ([^\[,{}\]]+\.(sql|plsql))/) printf "%s\n", $1 }}' | awk '{ printf "%s\n", $2 }' | tr -d '"')
-          t=$(echo "${filenames}" | awk -F'_' '{ printf "%s_%s\n", $1, $2 }')
+          t=$(echo "${files}" | awk -F'_' '{ if(tolower($0)~/.+\.(sql|plsql))/) printf "%s_%s\n", $1, $2 }')
           duplicationErrors=(`echo "${t}" | awk '{ count[toupper($0)]++ } END {  for (i in count) if (count[i] > 1) print i":"count[i] }'`)
           for duplicationInfo in "${duplicationErrors[@]}"; do   error=1;   echo "::error::Ambiguous script file name: there are ${duplicationInfo##*:} files whose names start with ${duplicationInfo%%:*}"; done
           for scriptFilePath in $filenames; do  scriptFileName=$(basename "${scriptFilePath}");   if [[ ! $scriptFileName =~ $fileNameRegex ]];  then echo "::error file=${scriptFilePath},title=Invalid file name::SQL file ${scriptFileName} does not conform to the required naming convention: <0000-9999>_<DWH|REPLICA|ODI>_*";         error=1;     fi; done
