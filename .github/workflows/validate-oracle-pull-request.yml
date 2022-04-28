@@ -17,9 +17,5 @@ jobs:
           filenames=$(curl -s -X GET -G $URL | awk -F, '{for(i=NF;i>=1;i--) {if(tolower($i)~/[^\[\]{},]"filename": ([^\[,{}\]]+\.(sql|plsql))/) printf "%s\n", $1 }}' | awk '{ printf "%s\n", $2 }')
           t=$(echo "${filenames}" | awk -F'_' '{ printf "%s_%s\n", $1, $2 }')
           duplicationErrors=(`echo "${t}" | awk '{ count[toupper($0)]++ } END {  for (i in count) if (count[i] > 1) print i":"count[i] }'`)
-          for duplicationInfo in "${duplicationErrors[@]}"\
-          do\
-            error=1\
-            echo "::error::Ambiguous script file name: there are ${duplicationInfo##*:} files whose names start with ${duplicationInfo%%:*}"\
-          done\
+          for duplicationInfo in "${duplicationErrors[@]}"; do   error=1;   echo "::error::Ambiguous script file name: there are ${duplicationInfo##*:} files whose names start with ${duplicationInfo%%:*}"; done
           exit $error
