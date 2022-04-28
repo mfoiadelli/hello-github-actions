@@ -3,10 +3,7 @@ on:
   pull_request:
     branches:    
       - main
-    types:
-      -**.sql
-      -**.plsql
-
+      
 jobs:
   check-files-names:
     name: Check Files Names
