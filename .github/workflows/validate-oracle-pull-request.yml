@@ -6,7 +6,7 @@ on:
     
 jobs:
   check-files-names:
-    name: Check Files Names
+    name: Check Scripts Names
     runs-on: self-hosted
     
     steps:
