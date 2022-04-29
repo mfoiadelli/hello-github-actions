@@ -38,7 +38,7 @@ jobs:
               } else {
                 result=result"/"$i
               }
-            }'
+            }')
             duplicationErrors=($(echo "${fileNameGroups}" |
               awk '{
                 count[toupper($0)]++
