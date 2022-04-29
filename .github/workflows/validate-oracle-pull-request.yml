@@ -16,7 +16,6 @@ jobs:
           shopt -s nullglob extglob nocaseglob
 
           fetchPullRequestModifiedFiles() {
-            echo "FETCHING MODIFIED FILE IN PULL REQUEST NUMBER ${{ github.event.pull_request.number }}..."
             API_URL="https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files"
             modifiedFiles=$(curl -s -X GET -G $API_URL | awk -F, '{
             for(i=NF;i>=1;i--)
@@ -82,16 +81,9 @@ jobs:
           fileNameRegex="^[0-9]{4}_(dwh|replica|odi)_.+\.(sql|plsql)$"
 
           fetchPullRequestModifiedFiles
-          echo -n "MODIFIED FILES FETCHED..."
           checkNamingDuplications
-          echo "DONE."
-          echo -n "DUPLICATIONS CHECKED..."
           checkNonConformingNamings
-          echo "DONE."
-          echo -n "NON CONFORMING NAMES CHECKED..."
           checkNonDeployableFiles
-          echo "DONE."
           
           shopt -u nullglob extglob nocaseglob
-          echo "ALL DONE."
           exit $error
