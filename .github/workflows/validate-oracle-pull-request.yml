@@ -18,22 +18,16 @@ jobs:
           fetchPullRequestModifiedFiles() {
             echo "FETCHING MODIFIED FILE IN PULL REQUEST NUMBER ${{ github.event.pull_request.number }}..."
             API_URL="https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files"
-            echo "$(curl -s -X GET -G $API_URL)"
             modifiedFiles=$(curl -s -X GET -G $API_URL | awk -F, '{
             for(i=NF;i>=1;i--)
             {
               if(toupper($i)~/"FILENAME": "ORACLESCRIPTS.+/)
                 printf "%s\n", $1
             }}' | awk '{ printf "%s\n", $2 }' | tr -d '"')
-            echo "${modifiedFiles}"
-            
+
             sqlFiles=$(echo "${modifiedFiles}" | grep -i -E -w '(plsql|sql)$' || echo "")
-            echo "SQL files:"
-            echo "${sqlFiles}"
             
             nonSqlFiles=$(echo "${modifiedFiles}" | grep -i -E -w -v '(plsql|sql|xml)$' || echo "")
-            echo "NON SQL files:"
-            echo "${nonSqlFiles}"
           }
 
           checkNamingDuplications() {
@@ -88,14 +82,16 @@ jobs:
           fileNameRegex="^[0-9]{4}_(dwh|replica|odi)_.+\.(sql|plsql)$"
 
           fetchPullRequestModifiedFiles
-          echo "MODIFIED FILES FETCHED -> EXIT NOW STATUS: ${error}"
+          echo -n "MODIFIED FILES FETCHED..."
           checkNamingDuplications
-          echo "DUPLICATIONS CHECKED -> EXIT NOW STATUS: ${error}"
+          echo "DONE."
+          echo -n "DUPLICATIONS CHECKED..."
           checkNonConformingNamings
-          echo "NON CONFORMING NAMES CHECKED -> EXIT NOW STATUS: ${error}"
+          echo "DONE."
+          echo -n "NON CONFORMING NAMES CHECKED..."
           checkNonDeployableFiles
-          echo "NON DEPLOYBLE NAMES CHECKED -> EXIT NOW STATUS: ${error}"
-
+          echo "DONE."
+          
           shopt -u nullglob extglob nocaseglob
-          echo "ALL DONE -> EXIT STATUS: ${error}"
+          echo "ALL DONE."
           exit $error
