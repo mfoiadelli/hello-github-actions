@@ -6,7 +6,7 @@ on:
     
 jobs:
   check-files-names:
-    name: Check Files Names
+    name: Check Scripts Names
     runs-on: self-hosted
     
     steps:
@@ -25,6 +25,11 @@ jobs:
             }}' | awk '{ printf "%s\n", $2 }' | tr -d '"')
             sqlFiles=$(echo "${modifiedFiles}" | grep -i -E -w '(plsql|sql)$')
             nonSqlFiles=$(echo "${modifiedFiles}" | grep -i -E -w -v '(plsql|sql|xml)$')
+            echo "${modifiedFiles}"
+            echo "SQL files:"
+            echo "${sqlFiles}"
+            echo "NON SQL files:"
+            echo "${nonSqlFiles}"
           }
 
           checkNamingDuplications() {
@@ -50,7 +55,7 @@ jobs:
 
             for duplicationInfo in "${duplicationErrors[@]}"
             do
-              error=1
+              
               echo "::error::Ambiguous script file name: there are ${duplicationInfo##*:} files whose names start with ${duplicationInfo%%:*}"
             done
           }
@@ -62,7 +67,7 @@ jobs:
               if [[ ! $scriptFileName =~ $fileNameRegex ]]
               then
                 echo "::error file=${scriptFilePath},title=Invalid file name::SQL file ${scriptFileName} does not conform to the required naming convention: <0000-9999>_<DWH|REPLICA|ODI>_*"
-                error=1
+                
               fi;
             done  
           }
@@ -79,9 +84,14 @@ jobs:
           fileNameRegex="^[0-9]{4}_(dwh|replica|odi)_.+\.(sql|plsql)$"
 
           fetchPullRequestModifiedFiles
+          echo "MODIFIED FILES FETCHED -> EXIT NOW STATUS: ${error}"
           checkNamingDuplications
+          echo "DUPLICATIONS CHECKED -> EXIT NOW STATUS: ${error}"
           checkNonConformingNamings
+          echo "NON CONFORMING NAMES CHECKED -> EXIT NOW STATUS: ${error}"
           checkNonDeployableFiles
+          echo "NON DEPLOYBLE NAMES CHECKED -> EXIT NOW STATUS: ${error}"
 
           shopt -u nullglob extglob nocaseglob
-          exit $error
+          echo "ALL DONE -> EXIT STATUS: ${error}"
+          exit 0
