@@ -25,6 +25,11 @@ jobs:
             }}' | awk '{ printf "%s\n", $2 }' | tr -d '"')
             sqlFiles=$(echo "${modifiedFiles}" | grep -i -E -w '(plsql|sql)$')
             nonSqlFiles=$(echo "${modifiedFiles}" | grep -i -E -w -v '(plsql|sql|xml)$')
+            echo "${modifiedFiles}"
+            echo "SQL files:"
+            echo "${sqlFiles}"
+            echo "NON SQL files:"
+            echo "${nonSqlFiles}"
           }
 
           checkNamingDuplications() {
@@ -76,18 +81,17 @@ jobs:
           }
 
           error=0
-          echo "EXIT STATUS: ${error}"
           fileNameRegex="^[0-9]{4}_(dwh|replica|odi)_.+\.(sql|plsql)$"
 
           fetchPullRequestModifiedFiles
-          echo "EXIT STATUS: ${error}"
+          echo "MODIFIED FILES FETCHED -> EXIT NOW STATUS: ${error}"
           checkNamingDuplications
-          echo "EXIT STATUS: ${error}"
+          echo "DUPLICATIONS CHECKED -> EXIT NOW STATUS: ${error}"
           checkNonConformingNamings
-          echo "EXIT STATUS: ${error}"
+          echo "NON CONFORMING NAMES CHECKED -> EXIT NOW STATUS: ${error}"
           checkNonDeployableFiles
-          echo "EXIT STATUS: ${error}"
+          echo "NON DEPLOYBLE NAMES CHECKED -> EXIT NOW STATUS: ${error}"
 
           shopt -u nullglob extglob nocaseglob
-          echo "EXIT STATUS: ${error}"
+          echo "ALL DONE -> EXIT STATUS: ${error}"
           exit 0
