@@ -1,0 +1,75 @@
+#!/bin/bash
+shopt -s nullglob extglob nocaseglob
+
+fetchPullRequestModifiedFiles() {
+  API_URL="https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files"
+  modifiedFiles=$(curl -s -X GET -G $API_URL | awk -F, '{
+        for(i=NF;i>=1;i--)
+         {
+          if(toupper($i)~/"FILENAME": "ORACLESCRIPTS.+/)
+            printf "%s\n", $1
+         }
+      }' | awk '{ printf "%s\n", $2 }' | tr -d '"')
+  sqlFiles=$(echo "${modifiedFiles}" | grep -i -E -w '(plsql|sql)$')
+  nonSqlFiles=$(echo "${modifiedFiles}" | grep -i -E -w -v '(plsql|sql|xml)$')
+}
+
+checkNamingDuplications() {
+  fileNameGroups=$(echo "${sqlFiles}" | awk -F'/' '{
+   result="";
+   for(i=1;i<=NF;i++)
+    if(i==NF) {
+      split($i,filenameTokens,"_"); printf "%s/%s_%s\n", result, filenameTokens[1],filenameTokens[2]
+    } else if(i==1) {
+      result=$i
+    } else {
+      result=result"/"$i
+    }
+  }'
+  duplicationErrors=($(echo "${fileNameGroups}" |
+   awk '{
+    count[toupper($0)]++
+   } END
+   {
+     for (i in count)
+      if (count[i] > 1)
+      print i":"count[i]
+   }'))
+
+  for duplicationInfo in "${duplicationErrors[@]}"
+    do
+      error=1
+      echo "::error::Ambiguous script file name: there are ${duplicationInfo##*:} files whose names start with ${duplicationInfo%%:*}"
+  done
+}
+
+checkNonConformingNamings() {
+  for scriptFilePath in $sqlFiles
+  do
+    scriptFileName=$(basename "${scriptFilePath}")
+    if [[ ! $scriptFileName =~ $fileNameRegex ]]
+    then
+      echo "::error file=${scriptFilePath},title=Invalid file name::SQL file ${scriptFileName} does not conform to the required naming convention: <0000-9999>_<DWH|REPLICA|ODI>_*"
+      error=1
+    fi;
+  done
+}
+
+checkNonDeployableFiles() {
+  for nonScriptFilePath in $nonSqlFiles
+  do
+    scriptFileName=$(basename "${nonScriptFilePath}")
+    echo "::warning file=${nonScriptFilePath},title=Non SQL or XML file extension::The extension of the file ${scriptFileName} is neither 'sql' nor 'plsql' nor 'xml'"
+  done
+}
+
+
+error=0
+fileNameRegex="^[0-9]{4}_(dwh|replica|odi)_.+\.(sql|plsql)$"
+
+fetchPullRequestModifiedFiles
+checkNamingDuplications
+checkNonConformingNamings
+
+shopt -u nullglob extglob nocaseglob
+exit $error
