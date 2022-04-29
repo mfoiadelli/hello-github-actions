@@ -15,5 +15,5 @@ jobs:
         run: |
           ./testShell.sh
         working-directory:
-          ${{github.workspace}}/dd
+          ${{github.workspace}}/validate-oracle-pullrequest
           
