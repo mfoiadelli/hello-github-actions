@@ -76,13 +76,18 @@ jobs:
           }
 
           error=0
+          echo "EXIT STATUS: ${error}"
           fileNameRegex="^[0-9]{4}_(dwh|replica|odi)_.+\.(sql|plsql)$"
 
           fetchPullRequestModifiedFiles
+          echo "EXIT STATUS: ${error}"
           checkNamingDuplications
+          echo "EXIT STATUS: ${error}"
           checkNonConformingNamings
+          echo "EXIT STATUS: ${error}"
           checkNonDeployableFiles
+          echo "EXIT STATUS: ${error}"
 
           shopt -u nullglob extglob nocaseglob
           echo "EXIT STATUS: ${error}"
-          exit ${error}
+          exit 0
