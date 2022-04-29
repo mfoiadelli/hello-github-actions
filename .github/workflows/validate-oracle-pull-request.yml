@@ -81,6 +81,7 @@ jobs:
           fetchPullRequestModifiedFiles
           checkNamingDuplications
           checkNonConformingNamings
+          checkNonDeployableFiles
 
           shopt -u nullglob extglob nocaseglob
           exit $error
