@@ -16,7 +16,7 @@ jobs:
           shopt -s nullglob extglob nocaseglob
 
           fetchPullRequestModifiedFiles() {
-            echo="FETCHING MODIFIED FILE IN PULL REQUEST NUMBER ${{ github.event.pull_request.number }}..."
+            echo "FETCHING MODIFIED FILE IN PULL REQUEST NUMBER ${{ github.event.pull_request.number }}..."
             API_URL="https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files"
             echo "$(curl -s -X GET -G $API_URL)"
             modifiedFiles=$(curl -s -X GET -G $API_URL | awk -F, '{
@@ -25,9 +25,9 @@ jobs:
               if(toupper($i)~/"FILENAME": "ORACLESCRIPTS.+/)
                 printf "%s\n", $1
             }}' | awk '{ printf "%s\n", $2 }' | tr -d '"')
+            echo "${modifiedFiles}"
             sqlFiles=$(echo "${modifiedFiles}" | grep -i -E -w '(plsql|sql)$')
             nonSqlFiles=$(echo "${modifiedFiles}" | grep -i -E -w -v '(plsql|sql|xml)$')
-            echo "${modifiedFiles}"
             echo "SQL files:"
             echo "${sqlFiles}"
             echo "NON SQL files:"
