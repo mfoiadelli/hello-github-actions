@@ -50,7 +50,7 @@ jobs:
 
             for duplicationInfo in "${duplicationErrors[@]}"
             do
-              error=1
+              
               echo "::error::Ambiguous script file name: there are ${duplicationInfo##*:} files whose names start with ${duplicationInfo%%:*}"
             done
           }
@@ -62,7 +62,7 @@ jobs:
               if [[ ! $scriptFileName =~ $fileNameRegex ]]
               then
                 echo "::error file=${scriptFilePath},title=Invalid file name::SQL file ${scriptFileName} does not conform to the required naming convention: <0000-9999>_<DWH|REPLICA|ODI>_*"
-                error=1
+                
               fi;
             done  
           }
