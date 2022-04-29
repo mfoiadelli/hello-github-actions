@@ -27,11 +27,11 @@ jobs:
             }}' | awk '{ printf "%s\n", $2 }' | tr -d '"')
             echo "${modifiedFiles}"
             
-            sqlFiles=$(echo "${modifiedFiles}" | grep -i -E -w '(plsql|sql)$')
+            sqlFiles=$(echo "${modifiedFiles}" | grep -i -E -w '(plsql|sql)$' || echo "")
             echo "SQL files:"
             echo "${sqlFiles}"
             
-            nonSqlFiles=$(echo "${modifiedFiles}" | grep -i -E -w -v '(plsql|sql|xml)$')
+            nonSqlFiles=$(echo "${modifiedFiles}" | grep -i -E -w -v '(plsql|sql|xml)$' || echo "")
             echo "NON SQL files:"
             echo "${nonSqlFiles}"
           }
