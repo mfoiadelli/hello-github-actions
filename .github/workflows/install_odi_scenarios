@@ -34,7 +34,7 @@ jobs:
    install-scenarios:
     name: Install ODI Scenarios
     runs-on: self-hosted
-    needs: backup-scenarios
+    needs: [ backup-scenarios ]
     environment: ${{github.event.inputs.environment}}
     
     steps: 
