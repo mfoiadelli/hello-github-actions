@@ -42,7 +42,6 @@ validateInputs
 generateConnectionProperties
 getOdiScenariosDirectory
 
-#cd ${odiScenariosDirectory}
 scenarioFiles=$(find ${odiScenariosDirectory} -type f \( -iname "*.xml" \) -exec basename {} ';' | sed -E 's/^SCEN_(.+)(_V).+_([0-9]{3})\.xml$/\1\2\3/g')
 grepPattern=$(echo ${scenarioFiles} | sed 's/ /|/')
 echo $odiScenariosDirectory
@@ -50,9 +49,7 @@ echo ${grepPattern}
 backupListFile=/tmp/scenarioBackupList.$$.txt
 /Users/matteofoiadelli/Documents/Development/OdiUtils/src/list-objects.sh -c ${connectionPropertiesFile} -t SCENARIO | grep -i -E "${grepPattern}" > ${backupListFile}
 
-/Users/matteofoiadelli/Documents/Development/OdiUtils/src/export-scenarios.sh -c ${connectionPropertiesFile} -f ${backupListFile} -o BACKUP
-
-$result=$(/Users/matteofoiadelli/Documents/Development/OdiUtils/src/import-scenarios.sh -c ${connectionPropertiesFile} ${odiScenariosDirectory};  echo $?)
+$result=$(/Users/matteofoiadelli/Documents/Development/OdiUtils/src/export-scenarios.sh -c ${connectionPropertiesFile} -f ${backupListFile} -o BACKUP; echo. $?)
 rm ${backupListFile} ${connectionPropertiesFile} 
 
 exit $result
