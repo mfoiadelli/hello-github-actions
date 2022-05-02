@@ -46,12 +46,19 @@ getOdiScenariosDirectory
 
 scenarioFiles=$(find ${odiScenariosDirectory} -type f \( -iname "*.xml" \) -exec basename {} ';' | sed -E 's/^SCEN_(.+)(_V).+_([0-9]{3})\.xml$/\1\2\3/g')
 grepPattern=$(echo ${scenarioFiles} | sed 's/ /|/')
-echo $odiScenariosDirectory
-echo ${grepPattern}
 backupListFile=/tmp/scenarioBackupList.$$.txt
+echo "------------------------------------------------"
+echo "Generating the list of ODI Scenarios to backup"
 /Users/matteofoiadelli/Documents/Development/OdiUtils/src/list-objects.sh -c ${connectionPropertiesFile} -t SCENARIO | grep -i -E "${grepPattern}" > ${backupListFile}
 
+echo "The following Odi Scenarios will be backed up: "
+cat ${backupListFile}
+echo "------------------------------------------------"
+echo ""
+echo "------------------------------------------------"
+echo "Backing up ODI Scenarios to directory ${backupDirectory}"
 $result=$(/Users/matteofoiadelli/Documents/Development/OdiUtils/src/export-scenarios.sh -c ${connectionPropertiesFile} -f ${backupListFile} -o ${backupDirectory}; echo $?)
+echo "------------------------------------------------"
 
 echo "::set-output name=connectionPropertiesFile::${connectionPropertiesFile}"
 echo "::set-output name=odiScenariosDirectory::${odiScenariosDirectory}"
