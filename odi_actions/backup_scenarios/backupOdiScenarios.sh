@@ -27,6 +27,7 @@ validateInputs() {
 	[[ -z ${odiWorkRepositoryName} ]] && echo "::error::ERROR: The ODI work repository cannot be null. Please provide a valid ODI work repository name to work with." && exit 1
 	[[ -z ${odiUsername} ]] && echo "::error::ERROR: ODI username cannot be null. Please provide a valid username in order to establish a connection to the ODI instance." && exit 1
 	[[ -z ${odiSchemaPwd} ]] && echo "::error::ERROR: ODI user password cannot be null. Please provide a valid user password in order to establish a connection to the ODI instance." && exit 1
+	[[ -z ${backupDirectory} ]] && echo "::error::ERROR: Backup destination directory cannot be null. Please provide a valid absolute path as the backup destination directory." && exit 1
 }
 
 # Get the shell inputs
@@ -37,6 +38,7 @@ odiSchemaPwd=$4
 odiWorkRepositoryName=$5
 odiUsername=$6
 odiUserPwd=$7
+backupDirectory=$8
 
 validateInputs
 generateConnectionProperties
@@ -49,7 +51,7 @@ echo ${grepPattern}
 backupListFile=/tmp/scenarioBackupList.$$.txt
 /Users/matteofoiadelli/Documents/Development/OdiUtils/src/list-objects.sh -c ${connectionPropertiesFile} -t SCENARIO | grep -i -E "${grepPattern}" > ${backupListFile}
 
-$result=$(/Users/matteofoiadelli/Documents/Development/OdiUtils/src/export-scenarios.sh -c ${connectionPropertiesFile} -f ${backupListFile} -o BACKUP; echo. $?)
+$result=$(/Users/matteofoiadelli/Documents/Development/OdiUtils/src/export-scenarios.sh -c ${connectionPropertiesFile} -f ${backupListFile} -o ${backupDirectory}; echo $?)
 
 echo "::set-output name=connectionPropertiesFile::${connectionPropertiesFile}"
 echo "::set-output name=odiScenariosDirectory::${odiScenariosDirectory}"
