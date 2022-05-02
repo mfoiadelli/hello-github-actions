@@ -54,6 +54,6 @@ $result=$(/Users/matteofoiadelli/Documents/Development/OdiUtils/src/export-scena
 echo "::set-output name=connectionPropertiesFile::${connectionPropertiesFile}"
 echo "::set-output name=odiScenariosDirectory::${odiScenariosDirectory}"
 
-rm ${backupListFile}
+rm ${backupListFile} ${connectionProperties}
 
 exit $result
