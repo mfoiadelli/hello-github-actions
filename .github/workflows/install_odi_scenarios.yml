@@ -1,4 +1,4 @@
-name: ODI - Install scenarios
+name: ODI - Backup and install scenarios
 on: 
   workflow_dispatch:
     inputs:
@@ -36,7 +36,8 @@ jobs:
           odiUsername: ${{secrets.ODI_USER}}
           odiUserPwd: ${{secrets.ODI_USER_PASSWORD}}
           backupDirectory: ${{github.event.inputs.backupDirectory}}
-   install-scenarios:
+          
+  install-scenarios:
     name: Install ODI Scenarios
     runs-on: self-hosted
     needs: [ backup-scenarios ]
