@@ -50,6 +50,10 @@ backupListFile=/tmp/scenarioBackupList.$$.txt
 /Users/matteofoiadelli/Documents/Development/OdiUtils/src/list-objects.sh -c ${connectionPropertiesFile} -t SCENARIO | grep -i -E "${grepPattern}" > ${backupListFile}
 
 $result=$(/Users/matteofoiadelli/Documents/Development/OdiUtils/src/export-scenarios.sh -c ${connectionPropertiesFile} -f ${backupListFile} -o BACKUP; echo. $?)
-rm ${backupListFile} ${connectionPropertiesFile} 
+
+echo "::set-output name=connectionPropertiesFile::${connectionPropertiesFile}"
+echo "::set-output name=odiScenariosDirectory::${odiScenariosDirectory}"
+
+rm ${backupListFile}
 
 exit $result
