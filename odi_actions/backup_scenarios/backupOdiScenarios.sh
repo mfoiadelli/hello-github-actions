@@ -62,9 +62,6 @@ result=$(/Users/matteofoiadelli/Documents/Development/OdiUtils/src/export-scenar
 [[ ${result} -eq 0 ]] && echo " Done!" || echo "::error::ERROR: Import process failed. Check the logs above for further details."
 echo "------------------------------------------------"
 
-echo "::set-output name=connectionPropertiesFile::${connectionPropertiesFile}"
-echo "::set-output name=odiScenariosDirectory::${odiScenariosDirectory}"
-
-rm ${backupListFile} ${connectionProperties}
+rm ${backupListFile} ${connectionPropertiesFile}
 
 exit $result
