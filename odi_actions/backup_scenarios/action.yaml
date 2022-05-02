@@ -1,0 +1,39 @@
+name: 'Generate Liquibase Changelog'
+description: 'Generates a liquibase changelog file for sql scripts in RITM'
+inputs:
+  RITM:
+    description: "The name of the RITM to be deployed"
+    required: true
+  environment:
+    description: "The environment to deploy to"
+    required: true
+  databaseName:
+    required: true
+  changelog-file: 
+    description: "The user provided changelog file name (if any)"
+  rollback: 
+    description: "If true the shell will produce the changelog file required to run the rollback scripts"
+    default: false
+    type: boolean
+  force-scripts-execution:
+    description: "If true all the scripts in the target directory will be executed even if previously run"
+    default: false
+    type: boolean
+outputs:
+  changelogFile:
+    description: "The name of the changelog file to process"
+    value: ${{steps.liquibase-changelog-generator.outputs.changelogFile}}
+  changelogDir:
+    description: "The path to the changelog file to process"
+    value: ${{steps.liquibase-changelog-generator.outputs.changelogDir}}
+    
+runs:
+  using: "composite" 
+  steps:
+    - name: Make executeable
+      run: chmod +x ${{ github.action_path }}/generateChangeLog.sh
+      shell: bash
+    - id: liquibase-changelog-generator
+      run: ${{ github.action_path }}/generateChangeLog.sh ${{ inputs.RITM }} ${{ inputs.environment }} ${{ inputs.databaseName }} ${{ inputs.rollback }} ${{ inputs.force-scripts-execution}} ${{ inputs.changelog-file }}
+      shell: bash
+      
