@@ -9,7 +9,7 @@ getOdiObjectsDirectory() {
 
 generateConnectionProperties() {
 	echo "Generating Connection Properties File..."
-   	connectionPropertiesFile=/tmp/connection.properties
+   	connectionPropertiesFile=/tmp/connection.$$.properties
 	echo "url=${odiUrl}" > ${connectionPropertiesFile}
    	echo "schema=${odiSchema}" >> ${connectionPropertiesFile}
    	echo "schemaPwd=${odiSchemaPwd}" >> ${connectionPropertiesFile}
