@@ -1,4 +1,4 @@
-name: ODI - Backup and install scenarios
+name: ODI - Install scenarios
 on: 
   workflow_dispatch:
     inputs:
