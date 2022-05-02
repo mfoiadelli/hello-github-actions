@@ -27,7 +27,7 @@ runs:
   using: "composite" 
   steps:
     - name: Make executeable
-      run: chmod +x ${{ github.action_path }}/backupOdiScenarios.sh
+      run: chmod +x ${{ github.action_path }}/installOdiScenarios.sh
       shell: bash
     - id: install-scenarios
       run: ${{ github.action_path }}/installOdiScenarios.sh ${{ inputs.RITM }} ${{ inputs.odiUrl }} ${{ inputs.odiSchema }} ${{ inputs.odiSchemaPwd }} ${{ inputs.odiWorkRepository }} ${{ inputs.odiUsername }} ${{ inputs.odiUserPwd }}
