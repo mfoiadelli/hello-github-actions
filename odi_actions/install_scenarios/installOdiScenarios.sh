@@ -43,6 +43,7 @@ generateConnectionProperties
 getOdiScenariosDirectory
 
 result=$(/Users/matteofoiadelli/Documents/Development/OdiUtils/src/import-scenarios.sh -c ${connectionPropertiesFile} ${odiScenariosDirectory}; echo $?)
+[[ ${result} -eq 0 ]] && echo " Done!" || echo "::error::ERROR: Import process failed. Check the logs above for further details."
 
 rm ${connectionPropertiesFile}
 
