@@ -42,7 +42,7 @@ validateInputs
 generateConnectionProperties
 getOdiScenariosDirectory
 
-$result=$(/Users/matteofoiadelli/Documents/Development/OdiUtils/src/import-scenarios.sh -c ${connectionPropertiesFile} ${odiScenariosDirectory};  echo $?)
+$result=$(/Users/matteofoiadelli/Documents/Development/OdiUtils/src/import-scenarios.sh -c ${connectionPropertiesFile} ${odiScenariosDirectory}; echo $?)
 
 rm ${connectionPropertiesFile}
 
