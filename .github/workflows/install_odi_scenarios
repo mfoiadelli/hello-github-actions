@@ -1,0 +1,50 @@
+name: ODI - Backup and install scenarios
+on: 
+  workflow_dispatch:
+    inputs:
+      environment:
+        type: environment
+        required: true
+        default: 'TEST'
+      RITM:
+        description: 'Directory of the RITM to be installed'     
+        required: true
+        type: string
+
+jobs:
+  backup-scenarios:
+    name: Backup ODI Scenarios
+    runs-on: self-hosted
+    environment: ${{github.event.inputs.environment}}
+    
+    steps:
+      - name: Code Checkout
+        uses: actions/checkout@v3
+      
+      - name: Backup Scenarios
+        uses: ./odi_actions/backup_scenarios
+        with:
+          RITM: ${{github.event.inputs.RITM}}
+          odiUrl: ${{secrets.ODI_DB_URL}}
+          odiSchema: ${{secrets.ODI_DB_SCHEMA}}
+          odiSchemaPwd: ${{secrets.ODI_DB_SCHEMA_PASSWORD}}
+          odiWorkRepository: ${{secrets.ODI_WORK_REPOSITORY}}
+          odiUsername: ${{secrets.ODI_USER}}
+          odiUserPwd: ${{secrets.ODI_USER_PASSWORD}}
+   install-scenarios:
+    name: Install ODI Scenarios
+    runs-on: self-hosted
+    needs: backup-scenarios
+    environment: ${{github.event.inputs.environment}}
+    
+    steps: 
+      - name: Install Scenarios
+        uses: ./odi_actions/install_scenarios
+        with:
+          RITM: ${{github.event.inputs.RITM}}
+          odiUrl: ${{secrets.ODI_DB_URL}}
+          odiSchema: ${{secrets.ODI_DB_SCHEMA}}
+          odiSchemaPwd: ${{secrets.ODI_DB_SCHEMA_PASSWORD}}
+          odiWorkRepository: ${{secrets.ODI_WORK_REPOSITORY}}
+          odiUsername: ${{secrets.ODI_USER}}
+          odiUserPwd: ${{secrets.ODI_USER_PASSWORD}}
