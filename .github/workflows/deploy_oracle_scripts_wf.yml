@@ -29,12 +29,13 @@ on:
 
 jobs:
   check-user:
+    if: github.actor != 'mfoiadelli'
     name: Check the user that triggered the workflow
     runs-on: self-hosted
     steps:
       - name: check-user
         run: |
-          [[ ${{ github.actor }} -eq "mfoiadelli" ]] && exit 1
+          [[ ${{ github.actor }} -eq "mfoiadelli" ]] && echo "::error::The user ${{github.actor}} cannot run this action." && exit 1
   create-changelog:
     needs: [check-user]
     name: Create Liquibase changelog
