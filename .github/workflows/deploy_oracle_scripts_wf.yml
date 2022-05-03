@@ -28,17 +28,9 @@ on:
         required: true
 
 jobs:
-  check-user:
-    name: Check the user that triggered the workflow
-    runs-on: ${{ github.event.inputs.environment }}
-    steps:
-      - name: check-user
-        run: |
-          [[ ${{ github.actor }} -eq "mfoiadelli" ]] && echo "::error::The user ${{github.actor}} cannot run this action." && exit 1
   create-changelog:
-    needs: [check-user]
     name: Create Liquibase changelog
-    runs-on: ${{ github.event.inputs.environment }}
+    runs-on: self-hosted
     environment: ${{github.event.inputs.environment}}
     outputs:
       changelogFile: ${{ steps.generate-or-find-changelog-file.outputs.changelogFile }}
