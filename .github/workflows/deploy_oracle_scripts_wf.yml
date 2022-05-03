@@ -28,7 +28,15 @@ on:
         required: true
 
 jobs:
+  check-user:
+    name: Check the user that triggered the workflow
+    runs-on: self-hosted
+    steps:
+      - name: check-user
+        run: |
+          [[ ${{ github.actor }} -eq "mfoiadelli" ]] && exit 1
   create-changelog:
+    needs: [check-user]
     name: Create Liquibase changelog
     runs-on: self-hosted
     environment: ${{github.event.inputs.environment}}
@@ -36,11 +44,7 @@ jobs:
       changelogFile: ${{ steps.generate-or-find-changelog-file.outputs.changelogFile }}
       changelogDir: ${{ steps.generate-or-find-changelog-file.outputs.changelogDir }}
       
-    steps:
-      - name: check-user
-        run: |
-          echo ${{ github.actor }}
-          
+    steps:    
       - uses: actions/checkout@v3
       
       - name: Get RITM path and changelog
