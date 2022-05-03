@@ -37,6 +37,10 @@ jobs:
       changelogDir: ${{ steps.generate-or-find-changelog-file.outputs.changelogDir }}
       
     steps:
+      - name: check-user
+        run: |
+          echo ${{ github.actor }}
+          
       - uses: actions/checkout@v3
       
       - name: Get RITM path and changelog
