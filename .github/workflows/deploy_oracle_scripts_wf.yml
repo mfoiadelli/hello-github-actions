@@ -29,9 +29,8 @@ on:
 
 jobs:
   check-user:
-    if: github.actor != 'mfoiadelli'
     name: Check the user that triggered the workflow
-    runs-on: self-hosted
+    runs-on: ${{secrets.RUNNER_NAME}}
     steps:
       - name: check-user
         run: |
@@ -39,7 +38,7 @@ jobs:
   create-changelog:
     needs: [check-user]
     name: Create Liquibase changelog
-    runs-on: self-hosted
+    runs-on: ${{secrets.RUNNER_NAME}}
     environment: ${{github.event.inputs.environment}}
     outputs:
       changelogFile: ${{ steps.generate-or-find-changelog-file.outputs.changelogFile }}
