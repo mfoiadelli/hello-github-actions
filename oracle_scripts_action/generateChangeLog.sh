@@ -59,7 +59,7 @@ populateChangeLog() {
       endDelimiter="/"
     fi
     # CREATE THE CHANGE SET FOR THIS FILE
-    changeset="            <changeSet author=\"${scriptLastCommitAuthor}\" id=\"${scriptsDirectoryName}_${scriptFileName}\" labels=\"${scriptsDirectoryName}\" runAlways=\"${forceScriptsExecution}\">
+    changeset="            <changeSet author=\"${scriptLastCommitAuthor}\" id=\"${scriptsDirectoryName}_${scriptFileName}\" runAlways=\"${forceScriptsExecution}\">
                   <sqlFile dbms=\"oracle\"
                       encoding=\"UTF-8\"
                       endDelimiter=\"${endDelimiter}\"
