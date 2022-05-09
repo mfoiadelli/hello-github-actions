@@ -8,8 +8,7 @@ on:
 jobs:
   check-files-names:
     name: Check Scripts Names
-    runs-on: self-hosted
-    
+    runs-on: [self-hosted odi-emea-macbook]    
     steps:
       - name: Check Names
         id: checkNames
