@@ -5,6 +5,7 @@ runs:
   using: "composite" 
   steps:
     - id: checkUser
+      shell: bash
       run: |
          echo "Checking user permission to perform the requested action..."
          API_URL="https://api.github.com/repos/${{ github.repository }}/pulls?state=open&base=main"
