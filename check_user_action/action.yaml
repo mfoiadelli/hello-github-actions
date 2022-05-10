@@ -7,7 +7,7 @@ runs:
     - id: checkUser
       shell: bash
       run: |
-         echo "Checking user permission to perform the requested action on environment ${{ github.events.inputs.environment }}..."
+         echo "Checking user permission to perform the requested action on environment ${{ github.event.inputs.environment }}..."
          API_URL="https://api.github.com/repos/${{ github.repository }}/pulls?state=open&base=main"
          allowedUsers=($(curl -s -X GET -G -H 'authorization: Bearer ${{ github.token }}' $API_URL | grep -Eizo '"requested_reviewers": \[\s+({\s+(".+": "?.+"?,?\s+)+},?\s+)+\]' | grep -i -w login | tr -d ' ' | sed -E 's/"login":"(.+)",/\1/g' | sort -u))
          
