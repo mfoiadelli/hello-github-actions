@@ -33,7 +33,9 @@ jobs:
     runs-on: self-hosted
     environment: ${{github.event.inputs.environment}}
     
-    steps:    
+    steps:  
+      - uses: actions/checkout@v3
+      
       - uses: ./check_user_action
     
   create-changelog:
@@ -46,7 +48,6 @@ jobs:
       changelogDir: ${{ steps.generate-or-find-changelog-file.outputs.changelogDir }}
       
     steps:    
-      - uses: actions/checkout@v3
         
       - name: Get RITM path and changelog
         id: generate-or-find-changelog-file
