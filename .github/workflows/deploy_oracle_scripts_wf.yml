@@ -28,17 +28,27 @@ on:
         required: true
 
 jobs:
+  check-user: 
+    name: Check User Permissions
+    runs-on: self-hosted
+    environment: ${{github.event.inputs.environment}}
+    
+    steps:    
+      - uses: ./check_user_action
+        id: checkUser
+    
   create-changelog:
     name: Create Liquibase changelog
     runs-on: self-hosted
     environment: ${{github.event.inputs.environment}}
+    needs: [check-user]
     outputs:
       changelogFile: ${{ steps.generate-or-find-changelog-file.outputs.changelogFile }}
       changelogDir: ${{ steps.generate-or-find-changelog-file.outputs.changelogDir }}
       
     steps:    
       - uses: actions/checkout@v3
-      
+        
       - name: Get RITM path and changelog
         id: generate-or-find-changelog-file
         uses: ./oracle_scripts_action
