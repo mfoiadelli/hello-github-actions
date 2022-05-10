@@ -35,7 +35,6 @@ jobs:
     
     steps:    
       - uses: ./check_user_action
-        id: checkUser
     
   create-changelog:
     name: Create Liquibase changelog
