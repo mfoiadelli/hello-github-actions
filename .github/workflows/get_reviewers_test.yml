@@ -13,14 +13,13 @@ jobs:
           shopt -s nullglob extglob nocaseglob
           fetchReviewers() {
             API_URL="https://api.github.com/repos/${{ github.repository }}/pulls/26/requested_reviewers"
-            curl -s -X GET -G -H 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' $API_UR
+            curl -s -X GET -G -H 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' $API_URL
             reviewers=$(curl -s -X GET -G -H 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' $API_URL | awk -F, '{
             for(i=NF;i>=1;i--)
             {
               if(toupper($i)~/"LOGIN": ".+)
                 printf "%s\n", $1
-            }}' | awk '{ printf "%s\n", $2 }' | tr -d '"')
-            
+            }}' | awk '{ printf "%s\n", $2 }' | tr -d '"') 
           }
           
           error=0
