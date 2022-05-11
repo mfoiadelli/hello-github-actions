@@ -10,12 +10,12 @@ runs:
   using: "composite" 
   steps:
     - id: checkProtectedEnvironments
-      if: ${{ !contains(fromJson(inputs.protectedEnvironments), github.event.repository.name) }}
-      run: echo(${{github.event.repository.name}}; exit 0
+      if: ${{ !contains(fromJson(inputs.protectedEnvironments), github.event.inputs.environment) }}
+      run: echo ${{github.event.inputs.environment}}; exit 0
       shell: bash
       
     - id: checkUser
-      if: contains(fromJson(inputs.protectedEnvironments), github.event.repository.name) 
+      if: contains(fromJson(inputs.protectedEnvironments), github.event.inputs.environment) 
       shell: bash
       run: |
          echo "Checking user permission to perform the requested action on environment ${{ github.event.inputs.environment }}..."
