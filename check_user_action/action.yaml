@@ -11,7 +11,7 @@ runs:
   steps:
     - id: checkProtectedEnvironments
       if: ${{ !contains(fromJson(inputs.protectedEnvironments), github.event.inputs.environment) }}
-      run: echo "Permission granted to user ${{ github.actor }} on environment ${{ github.event.inputs.environment }}; exit 0
+      run: echo "Permission granted to user ${{ github.actor }} on environment ${{ github.event.inputs.environment }}"; exit 0
       shell: bash
       
     - id: checkUser
@@ -27,5 +27,5 @@ runs:
           [[ ${{ github.actor }} == ${allowedUser} ]] && echo "...Permission granted!" && exit 0
          done
          
-         echo "::error::...Permission denied! User ${{ github.actor }} cannot perform this action on environment ${{ github.events.inputs.environment }}. Insufficient privileges."
+         echo "::error::...Permission denied! User ${{ github.actor }} cannot perform this action on environment ${{ github.event.inputs.environment }}. Insufficient privileges."
          exit 1
