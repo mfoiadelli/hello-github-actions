@@ -10,7 +10,7 @@ runs:
   using: "composite" 
   steps:
     - id: checkProtectedEnvironments
-      if: !contains(fromJson(inputs.protectedEnvironments), github.event.repository.name)
+      if: ${{ !contains(fromJson(inputs.protectedEnvironments), github.event.repository.name) }}
       run: exit 0
       shell: bash
       
