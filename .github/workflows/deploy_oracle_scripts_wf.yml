@@ -37,6 +37,8 @@ jobs:
       - uses: actions/checkout@v3
       
       - uses: ./check_user_action
+        with:
+          protectedEnvironments: '["env":"PROD"]'
     
   create-changelog:
     name: Create Liquibase changelog
