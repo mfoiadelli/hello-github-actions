@@ -38,7 +38,7 @@ jobs:
       
       - uses: ./check_user_action
         with:
-          protectedEnvironments: '["PROD"]'
+          protectedEnvironments: '[]'
     
   create-changelog:
     name: Create Liquibase changelog
