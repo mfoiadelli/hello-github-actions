@@ -26,7 +26,7 @@ validateInputs() {
 	[[ -z ${odiSchemaPwd} ]] && echo "::error::ERROR: ODI Schema password cannot be null. Please provide a valid password for the ODI schema." && exit 1
 	[[ -z ${odiWorkRepositoryName} ]] && echo "::error::ERROR: The ODI work repository cannot be null. Please provide a valid ODI work repository name to work with." && exit 1
 	[[ -z ${odiUsername} ]] && echo "::error::ERROR: ODI username cannot be null. Please provide a valid username in order to establish a connection to the ODI instance." && exit 1
-	[[ -z ${odiSchemaPwd} ]] && echo "::error::ERROR: ODI user password cannot be null. Please provide a valid user password in order to establish a connection to the ODI instance." && exit 1
+	[[ -z ${odiUserPwd} ]] && echo "::error::ERROR: ODI user password cannot be null. Please provide a valid user password in order to establish a connection to the ODI instance." && exit 1
 	[[ -z ${backupDirectory} ]] && echo "::error::ERROR: Backup destination directory cannot be null. Please provide a valid absolute path as the backup destination directory." && exit 1
 }
 
@@ -38,7 +38,7 @@ odiSchemaPwd=$4
 odiWorkRepositoryName=$5
 odiUsername=$6
 odiUserPwd=$7
-backupDirectory=$8
+backupDirectory=/backup/$(date '+%Y%m%d')_$ritmName
 
 validateInputs
 generateConnectionProperties
