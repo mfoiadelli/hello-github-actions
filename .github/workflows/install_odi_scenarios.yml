@@ -10,10 +10,6 @@ on:
         description: 'Directory of the RITM to be installed'     
         required: true
         type: string
-      backupDirectory:
-        description: 'The absolute path to the directory the backed up scenarios will be stored in.'
-        required: true
-        type: string
 
 jobs:
   backup-scenarios:
@@ -35,7 +31,6 @@ jobs:
           odiWorkRepository: ${{secrets.ODI_WORK_REPOSITORY}}
           odiUsername: ${{secrets.ODI_USER}}
           odiUserPwd: ${{secrets.ODI_USER_PASSWORD}}
-          backupDirectory: ${{github.event.inputs.backupDirectory}}
           
   install-scenarios:
     name: Install ODI Scenarios
