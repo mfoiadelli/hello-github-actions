@@ -38,7 +38,7 @@ odiSchemaPwd=$4
 odiWorkRepositoryName=$5
 odiUsername=$6
 odiUserPwd=$7
-backupDirectory="/backup/$(date '+%Y%m%d')_$ritmName"
+backupDirectory="~/backup/$(date '+%Y%m%d')_$ritmName"
 
 validateInputs
 generateConnectionProperties
