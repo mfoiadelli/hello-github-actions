@@ -1,10 +1,16 @@
 #!/bin/bash
+. /home/oracle/.bash_profile
 
 getOdiScenariosDirectory() {
 	echo "Getting Scenarios Directory..."
 	cd "$GITHUB_WORKSPACE" || exit 1
-	odiScenariosDirectory=$(find . -regex "./ODI/[0-9][0-9][0-9][0-9][0-9][0-9]/${ritmName}/scenarios")
-	[[ ! $odiScenariosDirectory ]] && echo "::error::ERROR: Cannot find the directory corresponding to the provided RITM identifier (${ritmName})!" && exit 1
+	targetDir="encrypted_scenarios"
+	if [[ -z ${key} ]]
+	then
+		targetDir="scenarios"
+	fi
+	odiScenariosDirectory=$(find . -regex "./ODI/[0-9][0-9][0-9][0-9][0-9][0-9]/${ritmName}/${targetDir}")
+	[[ ! $odiScenariosDirectory ]] && echo "::error::ERROR: Cannot find the directory corresponding to the provided RITM identifier (${ritmName}/${targetDir})!" && exit 1
 }
 
 generateConnectionProperties() {
@@ -38,7 +44,8 @@ odiSchemaPwd=$4
 odiWorkRepositoryName=$5
 odiUsername=$6
 odiUserPwd=$7
-backupDirectory=~/backup/$(date '+%Y%m%d')_$ritmName
+key=$8
+backupDirectory=/backup/$(date '+%Y%m%d')_$ritmName
 
 validateInputs
 generateConnectionProperties
@@ -49,7 +56,7 @@ grepPattern=$(echo ${scenarioFiles} | sed 's/ /|/')
 backupListFile=/tmp/scenarioBackupList.$$.txt
 echo "------------------------------------------------"
 echo "Generating the list of ODI Scenarios to backup"
-/Users/matteofoiadelli/Documents/Development/OdiUtils/src/list-objects.sh -c ${connectionPropertiesFile} -t SCENARIO | grep -i -E "${grepPattern}" > ${backupListFile}
+list-objects.sh -c ${connectionPropertiesFile} -t SCENARIO | grep -i -E "${grepPattern}" > ${backupListFile}
 
 echo "The following Odi Scenarios will be backed up: "
 cat ${backupListFile}
@@ -58,7 +65,12 @@ echo ""
 
 echo "------------------------------------------------"
 echo "Backing up ODI Scenarios to directory ${backupDirectory}"
-result=$(/Users/matteofoiadelli/Documents/Development/OdiUtils/src/export-scenarios.sh -c ${connectionPropertiesFile} -f ${backupListFile} -o ${backupDirectory}; echo $?)
+if [[ -z ${key} ]]
+then 
+	result=$(export-scenarios.sh -c ${connectionPropertiesFile} -f ${backupListFile} -o ${backupDirectory}; echo $?)
+else
+	result=$(export-scenarios.sh -c ${connectionPropertiesFile} -f ${backupListFile} -o ${backupDirectory} -k ${key}; echo $?)
+fi
 [[ ${result} -eq 0 ]] && echo " Done!" || echo "::error::ERROR: Backup process failed. Check the logs above for further details."
 echo "------------------------------------------------"
 
