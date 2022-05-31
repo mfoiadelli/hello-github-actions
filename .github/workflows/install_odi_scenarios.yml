@@ -25,11 +25,6 @@ jobs:
       - name: Code Checkout
         uses: actions/checkout@v3
       
-      - name: Check user permissions
-        uses: ./github-actions/check_user_permission
-        with:
-          protectedEnvironments: '["ODI_PROD"]'
-          
   backup-scenarios:
     name: Backup ODI Scenarios
     runs-on: self-hosted
@@ -57,7 +52,7 @@ jobs:
     
     steps: 
       - name: Install Scenarios
-        uses: ./github-actions/install_odi_scenarios
+        uses: ./odi_actions/install_scenarios
         with:
           RITM: ${{github.event.inputs.RITM}}
           odiUrl: ${{secrets.ODI_DB_URL}}
