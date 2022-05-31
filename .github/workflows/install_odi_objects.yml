@@ -10,19 +10,36 @@ on:
         description: 'Directory of the RITM to be installed'     
         required: true
         type: string
+      key:
+        description: 'Key to be used to import encrypted ODI objects'     
+        required: false
+        type: string
 
 jobs:
-  import-objects:
-    name: Import ODI objects
-    runs-on: self-hosted
+  check-user: 
+    name: Check User Permissions
+    runs-on: odi_runner
     environment: ${{github.event.inputs.environment}}
     
-    steps:
+    steps:  
       - name: Code Checkout
         uses: actions/checkout@v3
       
+      - name: Check user permissions
+        uses: ./github-actions/check_user_permission
+        with:
+          protectedEnvironments: '["ODI_PROD"]'
+          
+  import-objects:
+    name: Import ODI objects
+    runs-on: odi_runner
+    environment: ${{github.event.inputs.environment}}
+    needs: [check-user]
+    
+    steps:
+      
       - name: Import ODI Objects
-        uses: ./odi_actions/import_objects
+        uses: ./github-actions/import_odi_objects
         with:
           RITM: ${{github.event.inputs.RITM}}
           odiUrl: ${{secrets.ODI_DB_URL}}
@@ -31,3 +48,4 @@ jobs:
           odiWorkRepository: ${{secrets.ODI_WORK_REPOSITORY}}
           odiUsername: ${{secrets.ODI_USER}}
           odiUserPwd: ${{secrets.ODI_USER_PASSWORD}}
+          key: ${{github.event.inputs.key}}
