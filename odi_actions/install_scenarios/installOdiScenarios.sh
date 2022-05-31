@@ -1,10 +1,16 @@
 #!/bin/bash
+. /home/oracle/.bash_profile
 
 getOdiScenariosDirectory() {
 	echo "Getting Scenarios Directory..."
 	cd "$GITHUB_WORKSPACE" || exit 1
-	odiScenariosDirectory=$(find . -regex "./ODI/[0-9][0-9][0-9][0-9][0-9][0-9]/${ritmName}/scenarios")
-	[[ ! $odiScenariosDirectory ]] && echo "::error::ERROR: Cannot find the directory corresponding to the provided RITM identifier (${ritmName})!" && exit 1
+	targetDir="encrypted_scenarios"
+	if [[ -z ${key} ]]
+	then
+		targetDir="scenarios"
+	fi	
+	odiScenariosDirectory=$(find . -regex "./ODI/[0-9][0-9][0-9][0-9][0-9][0-9]/${ritmName}/${targetDir}")
+	[[ ! $odiScenariosDirectory ]] && echo "::error::ERROR: Cannot find the directory corresponding to the provided RITM identifier (${ritmName}/${targetDir})!" && exit 1
 }
 
 generateConnectionProperties() {
@@ -26,7 +32,7 @@ validateInputs() {
 	[[ -z ${odiSchemaPwd} ]] && echo "::error::ERROR: ODI Schema password cannot be null. Please provide a valid password for the ODI schema." && exit 1
 	[[ -z ${odiWorkRepositoryName} ]] && echo "::error::ERROR: The ODI work repository cannot be null. Please provide a valid ODI work repository name to work with." && exit 1
 	[[ -z ${odiUsername} ]] && echo "::error::ERROR: ODI username cannot be null. Please provide a valid username in order to establish a connection to the ODI instance." && exit 1
-	[[ -z ${odiSchemaPwd} ]] && echo "::error::ERROR: ODI user password cannot be null. Please provide a valid user password in order to establish a connection to the ODI instance." && exit 1
+	[[ -z ${odiUserPwd} ]] && echo "::error::ERROR: ODI user password cannot be null. Please provide a valid user password in order to establish a connection to the ODI instance." && exit 1
 }
 
 # Get the shell inputs
@@ -37,12 +43,18 @@ odiSchemaPwd=$4
 odiWorkRepositoryName=$5
 odiUsername=$6
 odiUserPwd=$7
+key=$8
 
 validateInputs
 generateConnectionProperties
 getOdiScenariosDirectory
 
-result=$(/Users/matteofoiadelli/Documents/Development/OdiUtils/src/import-scenarios.sh -c ${connectionPropertiesFile} ${odiScenariosDirectory}; echo $?)
+if [[ -z ${key} ]]
+then 
+	result=$(import-scenarios.sh -c ${connectionPropertiesFile} ${odiScenariosDirectory}; echo $?)
+else
+	result=$(import-scenarios.sh -c ${connectionPropertiesFile} -k ${key} ${odiScenariosDirectory}; echo $?)
+fi
 [[ ${result} -eq 0 ]] && echo " Done!" || echo "::error::ERROR: Import process failed. Check the logs above for further details."
 
 rm ${connectionPropertiesFile}
