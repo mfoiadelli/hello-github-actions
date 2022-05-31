@@ -1,5 +1,4 @@
 #!/bin/bash
-. /home/oracle/.bash_profile
 
 getOdiObjectsDirectory() {
 	echo "Getting Objects Directory..."
@@ -52,9 +51,9 @@ getOdiObjectsDirectory
 echo "Importing objects from directory ${odiObjectsDirectory}..."
 if [[ -z ${key} ]]
 then 
-	result=$(import-objects.sh -c ${connectionPropertiesFile} ${odiObjectsDirectory}; echo $?)
+	result=$(/Users/matteofoiadelli/Documents/Development/OdiUtils/src/import-objects.sh -c ${connectionPropertiesFile} ${odiObjectsDirectory}; echo $?)
 else
-	result=$(import-objects.sh -c ${connectionPropertiesFile} -k ${key} ${odiObjectsDirectory}; echo $?)
+	result=$(/Users/matteofoiadelli/Documents/Development/OdiUtils/src/import-objects.sh -c ${connectionPropertiesFile} -k ${key} ${odiObjectsDirectory}; echo $?)
 fi
 [[ ${result} -eq 0 ]] && echo " Done!" || echo "::error::ERROR: Import process failed. Check the logs above for further details."
 
