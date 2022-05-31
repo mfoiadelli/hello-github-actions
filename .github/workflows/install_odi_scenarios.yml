@@ -38,7 +38,7 @@ jobs:
     
     steps:
       - name: Backup Scenarios
-        uses: ./github-actions/backup_odi_scenarios
+        uses: ./odi_actions/backup_scenarios
         with:
           RITM: ${{github.event.inputs.RITM}}
           odiUrl: ${{secrets.ODI_DB_URL}}
