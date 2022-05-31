@@ -30,5 +30,7 @@ runs:
       run: chmod +x ${{ github.action_path }}/importOdiObjects.sh
       shell: bash
     - id: liquibase-changelog-generator
-      run: ${{ github.action_path }}/importOdiObjects.sh ${{ inputs.RITM }} ${{ inputs.odiUrl }} ${{ inputs.odiSchema }} ${{ inputs.odiSchemaPwd }} ${{ inputs.odiWorkRepository }} ${{ inputs.odiUsername }} ${{ inputs.odiUserPwd }}
+      run: |
+        odiSchema=$(echo "${{ inputs.odiSchema }}" | tr -d "\n")
+        ${{ github.action_path }}/importOdiObjects.sh ${{ inputs.RITM }} ${{ inputs.odiUrl }} ${odiSchema} ${{ inputs.odiSchemaPwd }} ${{ inputs.odiWorkRepository }} ${{ inputs.odiUsername }} ${{ inputs.odiUserPwd }}
       shell: bash
