@@ -18,7 +18,7 @@ on:
 jobs:
   check-user: 
     name: Check User Permissions
-    runs-on: odi_runner
+    runs-on: self-hosted
     environment: ${{github.event.inputs.environment}}
     
     steps:  
@@ -32,14 +32,14 @@ jobs:
           
   import-objects:
     name: Import ODI objects
-    runs-on: odi_runner
+    runs-on: self-hosted
     environment: ${{github.event.inputs.environment}}
     needs: [check-user]
     
     steps:
       
       - name: Import ODI Objects
-        uses: ./github-actions/import_odi_objects
+        uses: ./odi_actions/import_objects
         with:
           RITM: ${{github.event.inputs.RITM}}
           odiUrl: ${{secrets.ODI_DB_URL}}
