@@ -5,7 +5,7 @@ on:
       environment:
         type: environment
         required: true
-        default: 'ODI_TEST'
+        default: 'TEST'
       RITM:
         description: 'Directory of the RITM to be installed'     
         required: true
