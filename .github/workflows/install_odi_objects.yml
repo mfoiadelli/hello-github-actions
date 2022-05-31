@@ -25,11 +25,6 @@ jobs:
       - name: Code Checkout
         uses: actions/checkout@v3
       
-      - name: Check user permissions
-        uses: ./github-actions/check_user_permission
-        with:
-          protectedEnvironments: '["ODI_PROD"]'
-          
   import-objects:
     name: Import ODI objects
     runs-on: self-hosted
