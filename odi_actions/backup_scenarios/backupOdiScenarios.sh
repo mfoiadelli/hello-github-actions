@@ -1,5 +1,4 @@
 #!/bin/bash
-. /home/oracle/.bash_profile
 
 getOdiScenariosDirectory() {
 	echo "Getting Scenarios Directory..."
@@ -56,7 +55,7 @@ grepPattern=$(echo ${scenarioFiles} | sed 's/ /|/')
 backupListFile=/tmp/scenarioBackupList.$$.txt
 echo "------------------------------------------------"
 echo "Generating the list of ODI Scenarios to backup"
-list-objects.sh -c ${connectionPropertiesFile} -t SCENARIO | grep -i -E "${grepPattern}" > ${backupListFile}
+/Users/matteofoiadelli/Documents/Development/OdiUtils/src/list-objects.sh -c ${connectionPropertiesFile} -t SCENARIO | grep -i -E "${grepPattern}" > ${backupListFile}
 
 echo "The following Odi Scenarios will be backed up: "
 cat ${backupListFile}
@@ -67,9 +66,9 @@ echo "------------------------------------------------"
 echo "Backing up ODI Scenarios to directory ${backupDirectory}"
 if [[ -z ${key} ]]
 then 
-	result=$(export-scenarios.sh -c ${connectionPropertiesFile} -f ${backupListFile} -o ${backupDirectory}; echo $?)
+	result=$(/Users/matteofoiadelli/Documents/Development/OdiUtils/src/export-scenarios.sh -c ${connectionPropertiesFile} -f ${backupListFile} -o ${backupDirectory}; echo $?)
 else
-	result=$(export-scenarios.sh -c ${connectionPropertiesFile} -f ${backupListFile} -o ${backupDirectory} -k ${key}; echo $?)
+	result=$(/Users/matteofoiadelli/Documents/Development/OdiUtils/src/export-scenarios.sh -c ${connectionPropertiesFile} -f ${backupListFile} -o ${backupDirectory} -k ${key}; echo $?)
 fi
 [[ ${result} -eq 0 ]] && echo " Done!" || echo "::error::ERROR: Backup process failed. Check the logs above for further details."
 echo "------------------------------------------------"
