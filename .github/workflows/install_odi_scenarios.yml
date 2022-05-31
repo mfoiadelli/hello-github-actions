@@ -5,24 +5,40 @@ on:
       environment:
         type: environment
         required: true
-        default: 'TEST'
+        default: 'ODI_TEST'
       RITM:
         description: 'Directory of the RITM to be installed'     
         required: true
         type: string
+      key:
+        description: 'Key to be used to import encrypted ODI objects'     
+        required: false
+        type: string
 
 jobs:
-  backup-scenarios:
-    name: Backup ODI Scenarios
-    runs-on: self-hosted
+  check-user: 
+    name: Check User Permissions
+    runs-on: odi_runner
     environment: ${{github.event.inputs.environment}}
     
-    steps:
+    steps:  
       - name: Code Checkout
         uses: actions/checkout@v3
       
+      - name: Check user permissions
+        uses: ./github-actions/check_user_permission
+        with:
+          protectedEnvironments: '["ODI_PROD"]'
+          
+  backup-scenarios:
+    name: Backup ODI Scenarios
+    runs-on: odi_runner
+    environment: ${{github.event.inputs.environment}}
+    needs: [check-user]
+    
+    steps:
       - name: Backup Scenarios
-        uses: ./odi_actions/backup_scenarios
+        uses: ./github-actions/backup_odi_scenarios
         with:
           RITM: ${{github.event.inputs.RITM}}
           odiUrl: ${{secrets.ODI_DB_URL}}
@@ -31,16 +47,17 @@ jobs:
           odiWorkRepository: ${{secrets.ODI_WORK_REPOSITORY}}
           odiUsername: ${{secrets.ODI_USER}}
           odiUserPwd: ${{secrets.ODI_USER_PASSWORD}}
+          key: ${{github.event.inputs.key}}
           
   install-scenarios:
     name: Install ODI Scenarios
-    runs-on: self-hosted
+    runs-on: odi_runner
     needs: [ backup-scenarios ]
     environment: ${{github.event.inputs.environment}}
     
     steps: 
       - name: Install Scenarios
-        uses: ./odi_actions/install_scenarios
+        uses: ./github-actions/install_odi_scenarios
         with:
           RITM: ${{github.event.inputs.RITM}}
           odiUrl: ${{secrets.ODI_DB_URL}}
@@ -49,3 +66,4 @@ jobs:
           odiWorkRepository: ${{secrets.ODI_WORK_REPOSITORY}}
           odiUsername: ${{secrets.ODI_USER}}
           odiUserPwd: ${{secrets.ODI_USER_PASSWORD}}
+          key: ${{github.event.inputs.key}}
