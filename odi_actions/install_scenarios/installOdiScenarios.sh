@@ -1,5 +1,4 @@
 #!/bin/bash
-. /home/oracle/.bash_profile
 
 getOdiScenariosDirectory() {
 	echo "Getting Scenarios Directory..."
@@ -51,9 +50,9 @@ getOdiScenariosDirectory
 
 if [[ -z ${key} ]]
 then 
-	result=$(import-scenarios.sh -c ${connectionPropertiesFile} ${odiScenariosDirectory}; echo $?)
+	result=$(/Users/matteofoiadelli/Documents/Development/OdiUtils/src/import-scenarios.sh -c ${connectionPropertiesFile} ${odiScenariosDirectory}; echo $?)
 else
-	result=$(import-scenarios.sh -c ${connectionPropertiesFile} -k ${key} ${odiScenariosDirectory}; echo $?)
+	result=$(/Users/matteofoiadelli/Documents/Development/OdiUtils/src/import-scenarios.sh -c ${connectionPropertiesFile} -k ${key} ${odiScenariosDirectory}; echo $?)
 fi
 [[ ${result} -eq 0 ]] && echo " Done!" || echo "::error::ERROR: Import process failed. Check the logs above for further details."
 
