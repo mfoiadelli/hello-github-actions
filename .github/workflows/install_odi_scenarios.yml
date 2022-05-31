@@ -18,7 +18,7 @@ on:
 jobs:
   check-user: 
     name: Check User Permissions
-    runs-on: odi_runner
+    runs-on: self-hosted
     environment: ${{github.event.inputs.environment}}
     
     steps:  
@@ -32,7 +32,7 @@ jobs:
           
   backup-scenarios:
     name: Backup ODI Scenarios
-    runs-on: odi_runner
+    runs-on: self-hosted
     environment: ${{github.event.inputs.environment}}
     needs: [check-user]
     
@@ -51,7 +51,7 @@ jobs:
           
   install-scenarios:
     name: Install ODI Scenarios
-    runs-on: odi_runner
+    runs-on: self-hosted
     needs: [ backup-scenarios ]
     environment: ${{github.event.inputs.environment}}
     
