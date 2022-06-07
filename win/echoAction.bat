@@ -1,3 +1,3 @@
 echo %GITHUB_WORKSPACE%
-echo ${{ github.repository }}
-return 0
+echo %github.repository%
+exit 0
