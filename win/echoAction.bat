@@ -1,3 +1,4 @@
 echo %GITHUB_WORKSPACE%
-echo %github.repository%
+echo %GITHUB_REPOSITORY%
+echo %GITHUB_TOKEN%
 exit 0
