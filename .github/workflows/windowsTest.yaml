@@ -13,7 +13,4 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Run echo workspace
-        run: |
-            echo %GITHUB_WORKSPACE%
-            echo ${{ github.repository }}
-        shell: cmd
+        uses: ./win
