@@ -1,0 +1,12 @@
+name: 'TEST WIN ACTION'
+inputs:
+  environment:
+    description: "The environment to deploy to"
+    required: true
+    
+runs:
+  using: "composite" 
+  steps:
+    - id: test
+      run: ${{ github.action_path }}\echoAction.bat
+      shell: cmd
