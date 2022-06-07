@@ -1,0 +1,18 @@
+name: WINDOWS TEST
+on: 
+  workflow_dispatch:
+    inputs:
+      environment:
+        type: environment
+        required: true
+        default: 'TEST'
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run echo workspace
+        run: |
+            echo %GITHUB_WORKSPACE%
+        shell: cmd
