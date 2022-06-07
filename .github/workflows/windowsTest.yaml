@@ -8,11 +8,12 @@ on:
         default: 'TEST'
 
 jobs:
-  build:
+  echoVars:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v3
       - name: Run echo workspace
         run: |
             echo %GITHUB_WORKSPACE%
+            echo ${{ github.repository }}
         shell: cmd
