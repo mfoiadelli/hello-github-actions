@@ -1,4 +1,4 @@
 echo %GITHUB_WORKSPACE%
 echo %GITHUB_REPOSITORY%
-echo %GITHUB_CONTEXT%
+choco install tabular-editor
 exit 0
