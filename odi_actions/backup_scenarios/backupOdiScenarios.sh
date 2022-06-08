@@ -50,7 +50,7 @@ validateInputs
 generateConnectionProperties
 getOdiScenariosDirectory
 
-scenarioFiles=($(find ${odiScenariosDirectory} -type f \( -iname "*.xml" \) -exec basename {} ';' | sed -E 's/^SCEN_(.+)(_V).+_([0-9]{3})\.xml$/\1\2\3/g'))
+scenarioFiles=$(find ${odiScenariosDirectory} -type f \( -iname "*.xml" \) -exec basename {} ';' | sed -E 's/^SCEN_(.+)(_V).+_([0-9]{3})\.xml$/\1\2\3/g')
 grepPattern=$(echo ${scenarioFiles} | sed 's/ /|/g')
 echo "Grep pattern: ${grepPattern}"
 backupListFile=/tmp/scenarioBackupList.$$.txt
