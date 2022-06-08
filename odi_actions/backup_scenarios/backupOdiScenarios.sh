@@ -52,6 +52,7 @@ getOdiScenariosDirectory
 
 scenarioFiles=($(find ${odiScenariosDirectory} -type f \( -iname "*.xml" \) -exec basename {} ';' | sed -E 's/^SCEN_(.+)(_V).+_([0-9]{3})\.xml$/\1\2\3/g'))
 grepPattern=$(echo ${scenarioFiles} | sed 's/ /|/g')
+echo "Grep pattern: ${grepPattern}"
 backupListFile=/tmp/scenarioBackupList.$$.txt
 echo "------------------------------------------------"
 echo "Generating the list of ODI Scenarios to backup"
