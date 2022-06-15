@@ -29,7 +29,7 @@ jobs:
           }
           
           $secretsObject.PSObject.Properties | foreach { 
-            WRITE-HOST '$($_.Name): ' -NoNewline
+            WRITE-HOST "$($_.Name): " -NoNewline
             WRITE-HOST $($_.Value)
           }
         shell: pwsh
