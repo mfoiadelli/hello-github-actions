@@ -14,10 +14,10 @@ jobs:
       #- uses: actions/checkout@v3
       - name: Run echo workspace
         run: |
-          $secrets=${{ toJSON(secrets) }} | ConvertFrom-Json
+          $secrets=@${{ toJSON(secrets) }}
           WRITE_HOST $secrets
-          #$secrets.PSObject.Properties | foreach { 
-          #  WRITE_HOST $_.Name
-          #  WRITE_HOST $_.Value
-          #}
+          $secrets.PSObject.Properties | foreach { 
+            WRITE_HOST $_.Name
+            WRITE_HOST $_.Value
+          }
         shell: pwsh
