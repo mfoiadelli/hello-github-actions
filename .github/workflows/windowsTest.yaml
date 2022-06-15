@@ -12,14 +12,24 @@ jobs:
     runs-on: windows-latest
     environment: ${{ github.event.inputs.environment }}
     steps:
-      #- uses: actions/checkout@v3
-      - name: Run echo secrets
+      - name: Set Env Variables From Secrets
         run: |
+          # -------------------------------------------------------------------------
+          # CONVERT GITHUB SECRETS CONTEXT TO PSObject 
+          # HAVING EACH PROPERTY NAMED AFTER THE NAME OF THE CORRESPONDING SECRET
+          # -------------------------------------------------------------------------
           $secretsObject='${{ toJSON(secrets) }}' | ConvertFrom-Json
-          WRITE-HOST $secrets
+          
+          # -------------------------------------------------------------------------
+          # LOOP THROUGH secretsObject PROPERTIES AND SET CORRESPONDING 
+          # ENV VARIABLES AS <secretName>=<secretValue>
+          # -------------------------------------------------------------------------
           $secretsObject.PSObject.Properties | foreach { 
             Set-Variable -Name $_.Name -Value $_.Value
-            WRITE-HOST $($_.Name)
+          }
+          
+          $secretsObject.PSObject.Properties | foreach { 
+            WRITE-HOST '$($_.Name): ' -NoNewline
             WRITE-HOST $($_.Value)
           }
         shell: pwsh
