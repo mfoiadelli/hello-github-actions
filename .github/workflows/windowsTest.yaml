@@ -10,14 +10,16 @@ on:
 jobs:
   echoVars:
     runs-on: windows-latest
+    environment: ${{ github.event.inputs.environment }}
     steps:
       #- uses: actions/checkout@v3
-      - name: Run echo workspace
+      - name: Run echo secrets
         run: |
-          $secrets='${{ toJSON(secrets) }}' | ConvertFrom-Json
+          $secretsObject='${{ toJSON(secrets) }}' | ConvertFrom-Json
           WRITE-HOST $secrets
-          $secrets.PSObject.Properties | foreach { 
-            WRITE-HOST $_.Name
-            WRITE-HOST $_.Value
+          $secretsObject.PSObject.Properties | foreach { 
+            Set-Variable -Name $_.Name -Value $_.Value
+            WRITE-HOST $($_.Name)
+            WRITE-HOST $($_.Value)
           }
         shell: pwsh
